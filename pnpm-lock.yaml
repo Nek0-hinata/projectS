@@ -33,10 +33,10 @@ devDependencies:
     version: 20.10.4
   '@vitejs/plugin-vue':
     specifier: 4.5.2
-    version: 4.5.2(vite@5.0.6)(vue@3.3.11)
+    version: 4.5.2(vite@5.0.7)(vue@3.3.11)
   '@vitejs/plugin-vue-jsx':
     specifier: 3.1.0
-    version: 3.1.0(vite@5.0.6)(vue@3.3.11)
+    version: 3.1.0(vite@5.0.7)(vue@3.3.11)
   '@vue/eslint-config-prettier':
     specifier: 8.0.0
     version: 8.0.0(eslint@8.55.0)(prettier@3.1.0)
@@ -65,8 +65,8 @@ devDependencies:
     specifier: 5.3.3
     version: 5.3.3
   vite:
-    specifier: 5.0.6
-    version: 5.0.6(@types/node@20.10.4)
+    specifier: 5.0.7
+    version: 5.0.7(@types/node@20.10.4)
   vue-tsc:
     specifier: 1.8.25
     version: 1.8.25(typescript@5.3.3)
@@ -1125,7 +1125,7 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /@vitejs/plugin-vue-jsx@3.1.0(vite@5.0.6)(vue@3.3.11):
+  /@vitejs/plugin-vue-jsx@3.1.0(vite@5.0.7)(vue@3.3.11):
     resolution: {integrity: sha512-w9M6F3LSEU5kszVb9An2/MmXNxocAnUb3WhRr8bHlimhDrXNt6n6D2nJQR3UXpGlZHh/EsgouOHCsM8V3Ln+WA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -1135,20 +1135,20 @@ packages:
       '@babel/core': 7.23.3
       '@babel/plugin-transform-typescript': 7.23.3(@babel/core@7.23.3)
       '@vue/babel-plugin-jsx': 1.1.5(@babel/core@7.23.3)
-      vite: 5.0.6(@types/node@20.10.4)
+      vite: 5.0.7(@types/node@20.10.4)
       vue: 3.3.11(typescript@5.3.3)
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@vitejs/plugin-vue@4.5.2(vite@5.0.6)(vue@3.3.11):
+  /@vitejs/plugin-vue@4.5.2(vite@5.0.7)(vue@3.3.11):
     resolution: {integrity: sha512-UGR3DlzLi/SaVBPX0cnSyE37vqxU3O6chn8l0HJNzQzDia6/Au2A4xKv+iIJW8w2daf80G7TYHhi1pAUjdZ0bQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.0.0 || ^5.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 5.0.6(@types/node@20.10.4)
+      vite: 5.0.7(@types/node@20.10.4)
       vue: 3.3.11(typescript@5.3.3)
     dev: true
 
@@ -3352,8 +3352,8 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /vite@5.0.6(@types/node@20.10.4):
-    resolution: {integrity: sha512-MD3joyAEBtV7QZPl2JVVUai6zHms3YOmLR+BpMzLlX2Yzjfcc4gTgNi09d/Rua3F4EtC8zdwPU8eQYyib4vVMQ==}
+  /vite@5.0.7(@types/node@20.10.4):
+    resolution: {integrity: sha512-B4T4rJCDPihrQo2B+h1MbeGL/k/GMAHzhQ8S0LjQ142s6/+l3hHTT095ORvsshj4QCkoWu3Xtmob5mazvakaOw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
