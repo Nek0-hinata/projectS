@@ -6,7 +6,7 @@ settings:
 
 dependencies:
   echarts:
-    specifier: ^5.4.3
+    specifier: 5.4.3
     version: 5.4.3
   vue:
     specifier: 3.3.12
