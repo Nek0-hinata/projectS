@@ -1,2 +1,5 @@
 # Ignore config files:
 commitlint.config.js
+
+# Ignore artifacts:
+dist

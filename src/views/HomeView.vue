@@ -1,9 +1,8 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+<script lang="ts" setup>
+import KnowledgeGraph from '@/components/knowledgeGraph/knowledgeGraph.vue'
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <!--    <TheWelcome />-->
+  <KnowledgeGraph />
 </template>
