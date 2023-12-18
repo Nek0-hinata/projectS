@@ -34,19 +34,17 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           fetch_all_tags: true
 
-      - name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build project
         run: |
           pnpm build
+          tar -czvf ./pages.tar.gz ./dist
+          zip -r -q ./pages.zip ./dist
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          body: ${{steps.github_release.outputs.changelog}}
+          body: ${{steps.tag_version.outputs.changelog}}
           tag_name: ${{steps.tag_version.outputs.new_tag}}
-          files: ./dist
+          files: |
+            ./pages.tar.gz
+            ./pages.zip
