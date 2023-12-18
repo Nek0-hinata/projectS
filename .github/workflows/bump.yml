@@ -1,48 +1,52 @@
-name: Bump
+name: Bump & Release
+
 on:
   push:
-    # Use push on master event to run workflow instead of pull_request
-    # closed (merged) event because github token doesn't have write permission
-    # for pull_request from fork repository.
     branches:
       - main
-    tags:
-      - 'v*.*.*'
-  pull_request:
-    types:
-      - labeled
+
+permissions:
+  contents: write
 
 jobs:
-  lint:
-    uses: ./.github/workflows/lint.yml
-
-  release:
-    if: github.event.action != 'labeled'
-    needs: lint
+  bump-version-and-release:
+    name: Bump version & release
+    #    if: github.event.base_ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      # Bump version on merging Pull Requests with specific labels.
-      # (bump:major,bump:minor,bump:patch)
-      - id: bumpr
-        if: "!startsWith(github.ref, 'refs/tags/')"
-        uses: haya14busa/action-bumpr@v1
+      - uses: pnpm/action-setup@v2
 
-      # Update corresponding major and minor tag.
-      # e.g. Update v1 and v1.2 when releasing v1.2.3
-      - uses: haya14busa/action-update-semver@v1
-        if: '!steps.bumpr.outputs.skip'
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: |
+          pnpm install
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ steps.bumpr.outputs.next_version }}
+          fetch_all_tags: true
 
-  release-check:
-    if: github.event.action == 'labeled'
-    needs: lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+      - name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Post bumpr status comment
-        uses: haya14busa/action-bumpr@v1
+      - name: Build project
+        run: |
+          pnpm build
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: ${{steps.github_release.outputs.changelog}}
+          tag_name: ${{steps.tag_version.outputs.new_tag}}
+          files: ./dist
