@@ -47,16 +47,16 @@ devDependencies:
     specifier: 0.5.0
     version: 0.5.0
   beachball:
-    specifier: ^2.39.0
+    specifier: 2.39.0
     version: 2.39.0(typescript@5.3.3)
   commitizen:
-    specifier: ^4.3.0
+    specifier: 4.3.0
     version: 4.3.0(typescript@5.3.3)
   conventional-changelog-cli:
-    specifier: ^4.1.0
+    specifier: 4.1.0
     version: 4.1.0
   cz-conventional-changelog:
-    specifier: ^3.3.0
+    specifier: 3.3.0
     version: 3.3.0(typescript@5.3.3)
   eslint:
     specifier: 8.56.0
