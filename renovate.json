@@ -8,6 +8,7 @@
   "platformAutomerge": true,
   "prCreation": "immediate",
   "baseBranches": ["develop"],
+  "timezone": "Asia/Chongqing",
   "schedule": ["after 9am on Monday", "before 11am on Monday"],
   "packageRules": [
     {
