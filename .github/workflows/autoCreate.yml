@@ -1,0 +1,33 @@
+name: Auto Create PR
+
+permissions:
+  contents: read
+
+on:
+  push:
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create PR
+        env:
+          OWNER: ${{ github.repository_owner }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          PR_TEMPLATE=$(cat .github/PRTEMPLATE.md)
+          PR_BODY="${PR_TEMPLATE//<Branch-Placeholder>/$BRANCH_NAME}"
+          echo "Current branch is ${BRANCH_NAME}"
+          gh pr create --reviewer $OWNER --base "develop" --draft --title $BRANCH_NAME --body "$PR_BODY"
+
+#          branchName=$(github.event.base_ref | grep -o '[^/]*$')
