@@ -1,0 +1,30 @@
+name: Auto Create PR
+
+permissions:
+  contents: read
+
+on:
+  create:
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create PR
+        env:
+          OWNER: ${{ github.repository_owner }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Current branch is ${GITHUB_REF#refs/heads/}"
+          gh pr create --assignee $OWNER --base "develop" --draft --fill
+
+#          branchName=$(github.event.base_ref | grep -o '[^/]*$')
