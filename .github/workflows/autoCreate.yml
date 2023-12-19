@@ -4,10 +4,14 @@ permissions:
   contents: read
 
 on:
+  push:
+    branches-ignore:
+      - main
+      - develop
   create:
 
 jobs:
-  create:
+  create-or-update-pr:
     runs-on: ubuntu-latest
 
     permissions:
@@ -19,13 +23,46 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check for renovate_bot commits
+        id: check_renovate
+        run: |
+          AUTHOR=$(git log -1 --pretty=format:'%an')
+          echo "Commit author: $AUTHOR"
+          skip=false
+          if [ "$AUTHOR" = "renovate[bot]" ]; then
+            echo "Commit made by renovate_bot. Skipping PR changing."
+            skip=true
+          else
+            skip=false
+          fi
+          echo "skip=$skip" >> "$GITHUB_OUTPUT"
+
+      - name: Get PR tittle and body
+        if: steps.check_renovate.outputs.skip != 'true'
+        id: format_message
+        run: |
+          TITLE=${GITHUB_REF#refs/heads/}
+          PR_TEMPLATE=$(cat .github/PRTEMPLATE.md)
+          PR_BODY="${PR_TEMPLATE//\[Branch-Placeholder\]/$TITLE}"
+          COMMITS=$(git log origin/develop..HEAD --pretty=format:"- %s")
+          PR_BODY="${PR_BODY//\[Commits-Placeholder\]/$COMMITS}"
+          echo "Current branch is $TITLE"
+          cat <<EOF >./pr_body.md
+          $PR_BODY
+          EOF
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+
       - name: Create PR
+        if: github.event_name == 'create' && steps.check_renovate.outputs.skip != 'true'
         env:
           OWNER: ${{ github.repository_owner }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          PR_TEMPLATE=$(cat .github/PRTEMPLATE.md)
-          PR_BODY="${PR_TEMPLATE//<Branch-Placeholder>/$BRANCH_NAME}"
-          echo "Current branch is ${BRANCH_NAME}"
-          gh pr create --reviewer $OWNER --base "develop" --draft --fill --body "$PR_BODY"
+          gh pr create --reviewer $OWNER --base "develop" --draft --fill --body-file ./pr_body.md
+
+      - name: Edit PR
+        if: github.event_name == 'push' && steps.check_renovate.outputs.skip != 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr edit --body-file ./pr_body.md

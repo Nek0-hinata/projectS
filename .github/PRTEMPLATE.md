@@ -1,14 +1,18 @@
-# <Branch-Placeholder>
+# [Branch-Placeholder]
+
+## Commits
+
+[Commits-Placeholder]
 
 ## Description
 
-Please provide a summary of the changes you have made, and include any relevant background context. Explain the problem that you are solving and how your changes address the issue.
+Please provide a summary of the changes you have made, and include any relevant
+background context. Explain the problem that you are solving and how your
+changes address the issue.
 
 Fixes #(associated issue number)
 
 ## Type of Change
-
-Please delete options that are not relevant.
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
@@ -20,7 +24,7 @@ Please delete options that are not relevant.
 [//]: # '- [ ] Test A'
 [//]: # '- [ ] Test B'
 
-## Checklist:
+## Checklist
 
 Before submitting this PR, please make sure:
 
