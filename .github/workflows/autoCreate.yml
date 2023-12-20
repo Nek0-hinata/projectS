@@ -11,8 +11,11 @@ on:
   create:
 
 jobs:
-  create-or-update-pr:
+  check-if-renovate:
     runs-on: ubuntu-latest
+
+    outputs:
+      skip: ${{ steps.check_renovate.outputs.skip }}
 
     permissions:
       pull-requests: write
@@ -35,10 +38,19 @@ jobs:
           else
             skip=false
           fi
+          skip=true
           echo "skip=$skip" >> "$GITHUB_OUTPUT"
 
+  create-or-update-pr:
+    runs-on: ubuntu-latest
+    needs: check-if-renovate
+    if: ${{ needs.check-if-renovate.outputs.skip != 'true' }}
+
+    permissions:
+      pull-requests: write
+
+    steps:
       - name: Get PR tittle and body
-        if: steps.check_renovate.outputs.skip != 'true'
         id: format_message
         run: |
           TITLE=${GITHUB_REF#refs/heads/}
@@ -53,7 +65,7 @@ jobs:
           echo "title=$TITLE" >> "$GITHUB_OUTPUT"
 
       - name: Create PR
-        if: github.event_name == 'create' && steps.check_renovate.outputs.skip != 'true'
+        if: github.event_name == 'create'
         env:
           OWNER: ${{ github.repository_owner }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -61,7 +73,7 @@ jobs:
           gh pr create --reviewer $OWNER --base "develop" --draft --fill --body-file ./pr_body.md
 
       - name: Edit PR
-        if: github.event_name == 'push' && steps.check_renovate.outputs.skip != 'true'
+        if: github.event_name == 'push'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
