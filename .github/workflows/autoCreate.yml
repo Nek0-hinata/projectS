@@ -17,14 +17,9 @@ jobs:
     outputs:
       skip: ${{ steps.check_renovate.outputs.skip }}
 
-    permissions:
-      pull-requests: write
-
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Check for renovate_bot commits
         id: check_renovate
@@ -38,7 +33,6 @@ jobs:
           else
             skip=false
           fi
-          skip=true
           echo "skip=$skip" >> "$GITHUB_OUTPUT"
 
   create-or-update-pr:
@@ -50,22 +44,34 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get commit type
+        id: commit_type
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dry_run: true
+
       - name: Get PR tittle and body
         id: format_message
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          TYPE: ${{ steps.commit_type.outputs.release_type }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          SKIP_CHANGE=$(./scripts/getPR.sh $TYPE $EVENT_NAME)
           TITLE=${GITHUB_REF#refs/heads/}
-          PR_TEMPLATE=$(cat .github/PRTEMPLATE.md)
-          PR_BODY="${PR_TEMPLATE//\[Branch-Placeholder\]/$TITLE}"
-          COMMITS=$(git log origin/develop..HEAD --pretty=format:"- %s")
-          PR_BODY="${PR_BODY//\[Commits-Placeholder\]/$COMMITS}"
           echo "Current branch is $TITLE"
-          cat <<EOF >./pr_body.md
-          $PR_BODY
-          EOF
-          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+          echo "Change type is $TYPE"
+          echo "Should I skip the change? $SKIP_CHANGE"
+          echo "skip_change=$SKIP_CHANGE" >> "$GITHUB_OUTPUT"
 
       - name: Create PR
-        if: github.event_name == 'create'
+        if: ${{ github.event_name == 'create' && steps.format_message.outputs.skip_change != 'skip' }}
         env:
           OWNER: ${{ github.repository_owner }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,7 +79,7 @@ jobs:
           gh pr create --reviewer $OWNER --base "develop" --draft --fill --body-file ./pr_body.md
 
       - name: Edit PR
-        if: github.event_name == 'push'
+        if: ${{ github.event_name == 'push' &&  steps.format_message.outputs.skip_change != 'skip' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
