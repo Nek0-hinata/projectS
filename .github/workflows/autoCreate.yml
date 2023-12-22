@@ -8,10 +8,19 @@ on:
     branches-ignore:
       - main
       - develop
+
   create:
+
+  pull_request:
+    types:
+      - closed
+    branches-ignore:
+      - main
+      - develop
 
 jobs:
   check-if-renovate:
+    if: ${{ github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
 
     outputs:
@@ -36,9 +45,9 @@ jobs:
           echo "skip=$skip" >> "$GITHUB_OUTPUT"
 
   create-or-update-pr:
+    if: ${{ needs.check-if-renovate.outputs.skip != 'true' }}
     runs-on: ubuntu-latest
     needs: check-if-renovate
-    if: ${{ needs.check-if-renovate.outputs.skip != 'true' }}
 
     permissions:
       pull-requests: write
@@ -84,3 +93,39 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr edit --body-file ./pr_body.md
+
+  create-release-pr:
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changelog
+        id: tag_action
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dry_run: true
+
+      - name: Create pull request to develop
+        env:
+          OWNER: ${{ github.repository_owner }}
+          BODY: ${{ steps.tag_action.outputs.changelog }}
+          TAG: ${{ steps.tag_action.outputs.new_tag }}
+        run: |
+          git switch develop
+          git pull
+          if gh pr view > /dev/null 2>&1; then
+            echo "Already exist a pr, trying to update~"
+            gh pr comment --body "$BODY"
+          else
+            echo "Not found pr about develop, starting to create a new one~"
+            gh pr create --reviewer $OWNER --base "main" --draft --title "Prepare for $TAG" --body "$BODY"
+          fi
