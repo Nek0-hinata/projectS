@@ -9,6 +9,8 @@ on:
       - main
       - develop
 
+  create:
+
   pull_request:
     types:
       - closed
@@ -91,7 +93,7 @@ jobs:
         run: |
           gh pr edit --body-file ./pr_body.md
 
-  create-release-pr:
+  create-develop-pr:
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
 
@@ -120,9 +122,9 @@ jobs:
         run: |
           git switch develop
           git pull
-          if gh pr view > /dev/null 2>&1; then
+          if gh pr list --base develop --state open > /dev/null 2>&1; then
             echo "Already exist a pr, trying to update~"
-            gh pr comment --body "$BODY"
+            gh pr edit --body "$BODY"
           else
             echo "Not found pr about develop, starting to create a new one~"
             gh pr create --reviewer $OWNER --base "main" --draft --title "Prepare for $TAG" --body "$BODY"
