@@ -9,8 +9,6 @@ on:
       - main
       - develop
 
-  create:
-
   pull_request:
     types:
       - closed
