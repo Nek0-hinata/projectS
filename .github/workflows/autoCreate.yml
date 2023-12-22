@@ -16,7 +16,6 @@ on:
       - closed
     branches-ignore:
       - main
-      - develop
 
 jobs:
   check-if-renovate:
