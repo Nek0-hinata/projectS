@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # $1=steps.commit_type.outputs.release_type
-# $2=github.event_name
 
 #REPLACED="${TITLE//\//\\/}"
 cat <<EOF >./remote_pr.md
@@ -12,7 +11,8 @@ IDENTIFIER=$(cat <<EOF
 - [ ] The above area is tracked and modified by GitHub Actions. Check this option if you want to control by yourself.
 EOF
 )
-if ! grep -Fq -- "$IDENTIFIER" ./remote_pr.md && [ "$2" == 'push' ]; then
+PR_COUNT=$(gh pr list --state open | wc -l)
+if ! grep -Fq -- "$IDENTIFIER" ./remote_pr.md && [ "$PR_COUNT" -gt 0 ]; then
   echo "skip"
   exit 0
 #    PR_BODY="$(sed -n "/$REPLACED/,\$p" ./remote_pr.md)"
