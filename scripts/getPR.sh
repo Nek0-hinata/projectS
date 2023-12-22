@@ -12,7 +12,8 @@ IDENTIFIER=$(cat <<EOF
 - [ ] The above area is tracked and modified by GitHub Actions. Check this option if you want to control by yourself.
 EOF
 )
-if ! grep -Fq -- "$IDENTIFIER" ./remote_pr.md && [ "$2" == 'push' ]; then
+PR_COUNT=$(gh pr list --state open | wc -l)
+if ! grep -Fq -- "$IDENTIFIER" ./remote_pr.md && [ "$PR_COUNT" -gt 0 ]; then
   echo "skip"
   exit 0
 #    PR_BODY="$(sed -n "/$REPLACED/,\$p" ./remote_pr.md)"

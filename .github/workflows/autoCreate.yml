@@ -69,7 +69,7 @@ jobs:
           TYPE: ${{ steps.commit_type.outputs.release_type }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          SKIP_CHANGE=$(./scripts/getPR.sh $TYPE $EVENT_NAME)
+          SKIP_CHANGE=$(./scripts/getPR.sh $TYPE)
           TITLE=${GITHUB_REF#refs/heads/}
           echo "Current branch is $TITLE"
           echo "Change type is $TYPE"
@@ -81,7 +81,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if gh pr list --state open > /dev/null 2>&1; then
+          pr_count=$(gh pr list --state open | wc -l)
+          if [ "$pr_count" -gt 0 ]; then
             echo "Already exist a pr, trying to update~"
             gh pr edit --body-file ./pr_body.md
           else
@@ -118,6 +119,8 @@ jobs:
         run: |
           git switch develop
           git pull
+          pr_count=$(gh pr list --state open | wc -l)
+          if [ "$pr_count" -gt 0 ]; then
           if gh pr list --base develop --state open > /dev/null 2>&1; then
             echo "Already exist a pr, trying to update~"
             gh pr edit --body "$BODY"
