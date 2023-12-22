@@ -9,8 +9,6 @@ on:
       - main
       - develop
 
-  create:
-
   pull_request:
     types:
       - closed
@@ -78,20 +76,18 @@ jobs:
           echo "Should I skip the change? $SKIP_CHANGE"
           echo "skip_change=$SKIP_CHANGE" >> "$GITHUB_OUTPUT"
 
-      - name: Create PR
-        if: ${{ github.event_name == 'create' && steps.format_message.outputs.skip_change != 'skip' }}
-        env:
-          OWNER: ${{ github.repository_owner }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr create --reviewer $OWNER --base "develop" --draft --fill --body-file ./pr_body.md
-
-      - name: Edit PR
-        if: ${{ github.event_name == 'push' &&  steps.format_message.outputs.skip_change != 'skip' }}
+      - name: Create pull request for current branch
+        if: ${{ steps.format_message.outputs.skip_change != 'skip' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr edit --body-file ./pr_body.md
+          if gh pr list --state open > /dev/null 2>&1; then
+            echo "Already exist a pr, trying to update~"
+            gh pr edit --body-file ./pr_body.md
+          else
+            echo "Not found pr about current branch, starting to create a new one~"
+            gh pr create --reviewer "$OWNER" --base "develop" --draft --fill --body-file ./pr_body.md
+          fi
 
   create-develop-pr:
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true }}
@@ -127,5 +123,5 @@ jobs:
             gh pr edit --body "$BODY"
           else
             echo "Not found pr about develop, starting to create a new one~"
-            gh pr create --reviewer $OWNER --base "main" --draft --title "Prepare for $TAG" --body "$BODY"
+            gh pr create --reviewer "$OWNER" --base "main" --draft --title "Prepare for $TAG" --body "$BODY"
           fi
