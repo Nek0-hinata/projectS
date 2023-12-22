@@ -9,8 +9,6 @@ on:
       - main
       - develop
 
-  create:
-
   pull_request:
     types:
       - closed
@@ -118,6 +116,7 @@ jobs:
           OWNER: ${{ github.repository_owner }}
           BODY: ${{ steps.tag_action.outputs.changelog }}
           TAG: ${{ steps.tag_action.outputs.new_tag }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git switch develop
           git pull
