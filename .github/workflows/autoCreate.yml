@@ -8,10 +8,16 @@ on:
     branches-ignore:
       - main
       - develop
-  create:
+
+  pull_request:
+    types:
+      - closed
+    branches-ignore:
+      - main
 
 jobs:
   check-if-renovate:
+    if: ${{ github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
 
     outputs:
@@ -36,9 +42,9 @@ jobs:
           echo "skip=$skip" >> "$GITHUB_OUTPUT"
 
   create-or-update-pr:
+    if: ${{ needs.check-if-renovate.outputs.skip != 'true' }}
     runs-on: ubuntu-latest
     needs: check-if-renovate
-    if: ${{ needs.check-if-renovate.outputs.skip != 'true' }}
 
     permissions:
       pull-requests: write
@@ -63,24 +69,62 @@ jobs:
           TYPE: ${{ steps.commit_type.outputs.release_type }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          SKIP_CHANGE=$(./scripts/getPR.sh $TYPE $EVENT_NAME)
+          SKIP_CHANGE=$(./scripts/getPR.sh $TYPE)
           TITLE=${GITHUB_REF#refs/heads/}
           echo "Current branch is $TITLE"
           echo "Change type is $TYPE"
           echo "Should I skip the change? $SKIP_CHANGE"
           echo "skip_change=$SKIP_CHANGE" >> "$GITHUB_OUTPUT"
 
-      - name: Create PR
-        if: ${{ github.event_name == 'create' && steps.format_message.outputs.skip_change != 'skip' }}
+      - name: Create or edit pull request for current branch
+        if: ${{ steps.format_message.outputs.skip_change != 'skip' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          pr_count=$(gh pr list --state open | wc -l)
+          if [ "$pr_count" -gt 0 ]; then
+            echo "Already exist a pr, trying to update~"
+            gh pr edit --body-file ./pr_body.md
+          else
+            echo "Not found pr about current branch, starting to create a new one~"
+            gh pr create --reviewer "$OWNER" --base "develop" --draft --fill --body-file ./pr_body.md
+          fi
+
+  create-develop-pr:
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changelog
+        id: tag_action
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dry_run: true
+
+      - name: Create pull request to develop
         env:
           OWNER: ${{ github.repository_owner }}
+          BODY: ${{ steps.tag_action.outputs.changelog }}
+          TAG: ${{ steps.tag_action.outputs.new_tag }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr create --reviewer $OWNER --base "develop" --draft --fill --body-file ./pr_body.md
-
-      - name: Edit PR
-        if: ${{ github.event_name == 'push' &&  steps.format_message.outputs.skip_change != 'skip' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr edit --body-file ./pr_body.md
+          git switch develop
+          git pull
+          pr_count=$(gh pr list --state open | wc -l)
+          if [ "$pr_count" -gt 0 ]; then
+            echo "Already exist a pr, trying to update~"
+            gh pr edit --body "$BODY"
+          else
+            echo "Not found pr about develop, starting to create a new one~"
+            gh pr create --reviewer "$OWNER" --base "main" --draft --title "Prepare for $TAG" --body "$BODY"
+          fi
