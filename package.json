@@ -1,6 +1,6 @@
 {
   "name": "project_s",
-  "packageManager": "pnpm@8.14.1",
+  "packageManager": "pnpm@8.14.2",
   "version": "0.0.0",
   "private": true,
   "engines": {
@@ -35,8 +35,8 @@
     "vue-router": "4.2.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "18.4.4",
-    "@commitlint/config-conventional": "18.4.4",
+    "@commitlint/cli": "18.5.0",
+    "@commitlint/config-conventional": "18.5.0",
     "@rushstack/eslint-patch": "1.7.0",
     "@tsconfig/node18": "18.2.2",
     "@types/node": "20.11.5",
