@@ -37,8 +37,8 @@ jobs:
       - name: Build project
         run: |
           pnpm build
-          tar -czvf ./pages.tar.gz ./dist
-          zip -r -q ./pages.zip ./dist
+          tar -czvf ./pages.tar.gz ./next
+          zip -r -q ./pages.zip ./next
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
