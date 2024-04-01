@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
 # $1=steps.commit_type.outputs.release_type
+# $2=CurrentBranch
+
+ReleaseType=$1
+CurrentBranch=$2
 
 #REPLACED="${TITLE//\//\\/}"
 cat <<EOF >./remote_pr.md
@@ -11,7 +15,7 @@ IDENTIFIER=$(cat <<EOF
 - [ ] The above area is tracked and modified by GitHub Actions. Check this option if you want to control by yourself.
 EOF
 )
-PR_COUNT=$(gh pr list --state open | wc -l)
+PR_COUNT=$(gh pr list --state open --head "$CurrentBranch" | wc -l)
 if ! grep -Fq -- "$IDENTIFIER" ./remote_pr.md && [ "$PR_COUNT" -gt 0 ]; then
   echo "skip"
   exit 0
@@ -26,7 +30,7 @@ COMMITS=$(git log origin/develop..HEAD --pretty=format:"- %s")
 PR_BODY="${PR_BODY//\[Commits-Placeholder\]/$COMMITS}"
 
 #steps.commit_type.outputs.release_type
-case $1 in
+case $ReleaseType in
   *major)
     PR_BODY="${PR_BODY//\[ \] Breaking change/[x] Breaking change}"
     ;;
