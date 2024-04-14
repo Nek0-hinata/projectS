@@ -1,7 +1,7 @@
 {
   "name": "project-s",
   "version": "0.1.0",
-  "packageManager": "pnpm@8.15.6",
+  "packageManager": "pnpm@8.15.7",
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -13,27 +13,27 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "next": "14.1.4",
+    "next": "14.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "19.2.1",
-    "@commitlint/config-conventional": "19.1.0",
-    "@types/node": "20.12.5",
-    "@types/react": "18.2.74",
-    "@types/react-dom": "18.2.24",
+    "@commitlint/cli": "19.2.2",
+    "@commitlint/config-conventional": "19.2.2",
+    "@types/node": "20.12.7",
+    "@types/react": "18.2.78",
+    "@types/react-dom": "18.2.25",
     "autoprefixer": "10.4.19",
     "commitizen": "4.3.0",
     "conventional-changelog-cli": "4.1.0",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "8.57.0",
-    "eslint-config-next": "14.1.4",
+    "eslint-config-next": "14.2.1",
     "eslint-config-prettier": "9.1.0",
     "husky": "9.0.11",
     "postcss": "8.4.38",
     "prettier": "3.2.5",
     "tailwindcss": "3.4.3",
-    "typescript": "5.4.4"
+    "typescript": "5.4.5"
   }
 }
