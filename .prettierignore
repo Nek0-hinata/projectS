@@ -5,6 +5,7 @@
 # Ignore artifacts:
 .next
 dist
+out
 coverage
 
 # Ignore all HTML files:
