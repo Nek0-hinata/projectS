@@ -44,10 +44,10 @@ devDependencies:
     specifier: 19.2.2
     version: 19.2.2
   '@types/bcrypt':
-    specifier: ^5.0.1
+    specifier: 5.0.2
     version: 5.0.2
   '@types/lodash':
-    specifier: ^4.17.0
+    specifier: 4.17.0
     version: 4.17.0
   '@types/node':
     specifier: 20.12.7
@@ -59,7 +59,7 @@ devDependencies:
     specifier: 18.3.0
     version: 18.3.0
   '@vercel/style-guide':
-    specifier: ^6.0.0
+    specifier: 6.0.0
     version: 6.0.0(eslint@8.57.0)(prettier@3.2.5)(typescript@5.4.5)
   autoprefixer:
     specifier: 10.4.19
@@ -74,7 +74,7 @@ devDependencies:
     specifier: 3.3.0
     version: 3.3.0(@types/node@20.12.7)(typescript@5.4.5)
   dotenv:
-    specifier: ^16.4.5
+    specifier: 16.4.5
     version: 16.4.5
   eslint:
     specifier: 8.57.0
@@ -3118,7 +3118,7 @@ packages:
     dependencies:
       foreground-child: 3.1.1
       jackspeak: 2.3.6
-      minimatch: 9.0.3
+      minimatch: 9.0.4
       minipass: 7.0.4
       path-scurry: 1.10.1
     dev: true
