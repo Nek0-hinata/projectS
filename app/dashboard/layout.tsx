@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Sider>
         <SideBar />
       </Sider>
-      <div className={'min-h-screen min-w-max bg-white'}>
+      <div className={'min-h-screen w-screen bg-white'}>
         <div>{children}</div>
       </div>
     </div>

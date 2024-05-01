@@ -1,28 +1,40 @@
-import { Form } from 'antd';
+import { Button, Form } from 'antd';
 import FormItem, { FormItemProps } from 'antd/lib/form/FormItem';
-import { ReactNode } from 'react';
+import type { FormProps } from 'antd/lib/form/Form';
+import { ComponentType } from 'react';
 
-interface IProps {
-  formItems: (FormItemProps & { component: ReactNode; componentProps: any })[];
+export type FormItemType = FormItemProps & {
+  name: string;
+  component: ComponentType<any>;
+  componentProps?: any;
+};
+
+interface IProps<T> {
+  formItems: FormItemType[];
+  onFinish?: FormProps<T>['onFinish'];
+  className?: string;
 }
 
-export default function SForm({ formItems }: IProps) {
+export default function SForm<T>({
+  formItems,
+  className,
+  onFinish,
+}: IProps<T>) {
   return (
-    <Form>
-      {formItems.map((items) => {
-        const { name, label, rules, initialValue } = items;
+    <Form className={className} layout={'vertical'} onFinish={onFinish}>
+      {formItems.map((item) => {
+        const { name, component: Component } = item;
         return (
-          <FormItem
-            label={label}
-            name={name}
-            key={name}
-            rules={rules}
-            initialValue={initialValue}
-          >
-            {items.component}
+          <FormItem key={name} {...item}>
+            {<Component {...item.componentProps} />}
           </FormItem>
         );
       })}
+      <FormItem>
+        <Button type={'primary'} htmlType={'submit'}>
+          提交
+        </Button>
+      </FormItem>
     </Form>
   );
 }

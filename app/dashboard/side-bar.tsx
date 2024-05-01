@@ -1,7 +1,7 @@
 'use client';
 import { Menu, MenuProps } from 'antd';
 import { Key, ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -38,9 +38,9 @@ export const items: MenuItem[] = [
 
 export default function SideBar() {
   const router = useRouter();
+  const pathname = usePathname();
 
   async function sideBarHandler(key: string) {
-    console.log(key);
     if (key === SideBarEnum.SignOut) {
       await signOut();
     } else {
@@ -52,7 +52,8 @@ export default function SideBar() {
     <Menu
       items={items}
       onClick={(e) => sideBarHandler(e.key)}
-      defaultSelectedKeys={['/dashboard']}
+      defaultSelectedKeys={[pathname]}
+      defaultOpenKeys={['sub1']}
       mode={'inline'}
     />
   );
