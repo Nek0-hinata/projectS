@@ -42,7 +42,7 @@ model users {
   // 身份证
   idNumber          String
   phoneNumber       String
-  email             String
+  email             String             @unique
   password          String
   internetDetails   internetDetail[]
   billingStatements billingStatement[]
