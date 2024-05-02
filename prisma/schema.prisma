@@ -38,7 +38,8 @@ model users {
   id                String             @id @default(cuid())
   username          String
   name              String
-  status            String
+  status            Status             @default(NORMAL)
+  // 身份证
   idNumber          String
   phoneNumber       String
   email             String
@@ -78,4 +79,9 @@ model log {
   recordTime   DateTime @default(now())
   users        users?   @relation(fields: [usersId], references: [id])
   usersId      String?
+}
+
+enum Status {
+  NORMAL
+  ABNORMAL
 }
