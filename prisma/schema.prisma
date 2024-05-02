@@ -14,26 +14,6 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-model customers {
-  id        String @id @default(uuid()) @db.Uuid
-  name      String @db.VarChar(255)
-  email     String @db.VarChar(255)
-  image_url String @db.VarChar(255)
-}
-
-model invoices {
-  id          String   @id @default(uuid()) @db.Uuid
-  customer_id String   @db.Uuid
-  amount      Int
-  status      String   @db.VarChar(255)
-  date        DateTime @db.Date
-}
-
-model revenue {
-  month   String @unique @db.VarChar(4)
-  revenue Int
-}
-
 model users {
   id                String             @id @default(cuid())
   username          String
@@ -50,15 +30,15 @@ model users {
 }
 
 model internetDetail {
-  id            String   @id @default(cuid())
-  onlineTime    DateTime
-  offlineTime   DateTime
-  macAddress    String
-  ipAddress     String
-  curentTraffic Int
-  duration      Int
-  userId        String
-  users         users    @relation(fields: [userId], references: [id])
+  id             String   @id @default(cuid())
+  signInTime     DateTime @default(now())
+  signOutTime    DateTime @default(now())
+  macAddress     String
+  ipAddress      String
+  currentTraffic Int      @default(0)
+  duration       Int      @default(0)
+  userId         String
+  users          users    @relation(fields: [userId], references: [id])
 }
 
 model billingStatement {
