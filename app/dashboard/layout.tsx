@@ -1,12 +1,15 @@
-import SideNav from '@/app/ui/dashboard/sidenav';
+import Sider from 'antd/lib/layout/Sider';
+import SideBar from '@/app/dashboard/side-bar';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-      <div className="w-full flex-none md:w-64">
-        <SideNav />
+    <div className={'flex min-h-screen bg-white'}>
+      <Sider>
+        <SideBar />
+      </Sider>
+      <div className={'min-h-screen w-screen bg-white'}>
+        <div>{children}</div>
       </div>
-      <div className="flex-grow p-6 md:overflow-y-auto md:p-12">{children}</div>
     </div>
   );
 }
