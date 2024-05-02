@@ -15,14 +15,14 @@ datasource db {
 }
 
 model customers {
-  id        String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id        String @id @default(uuid()) @db.Uuid
   name      String @db.VarChar(255)
   email     String @db.VarChar(255)
   image_url String @db.VarChar(255)
 }
 
 model invoices {
-  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id          String   @id @default(uuid()) @db.Uuid
   customer_id String   @db.Uuid
   amount      Int
   status      String   @db.VarChar(255)
@@ -35,8 +35,47 @@ model revenue {
 }
 
 model users {
-  id       String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name     String @db.VarChar(255)
-  email    String @unique
-  password String
+  id                String             @id @default(cuid())
+  username          String
+  name              String
+  status            String
+  idNumber          String
+  phoneNumber       String
+  email             String
+  password          String
+  internetDetails   internetDetail[]
+  billingStatements billingStatement[]
+  log               log[]
+}
+
+model internetDetail {
+  id            String   @id @default(cuid())
+  onlineTime    DateTime
+  offlineTime   DateTime
+  macAddress    String
+  ipAddress     String
+  curentTraffic Int
+  duration      Int
+  userId        String
+  users         users    @relation(fields: [userId], references: [id])
+}
+
+model billingStatement {
+  id              String   @id @default(cuid())
+  product         String
+  totalTraffic    Float
+  totalOnlineTime Int
+  billingTime     DateTime
+  userId          String
+  users           users    @relation(fields: [userId], references: [id])
+}
+
+model log {
+  id           String   @id @default(cuid())
+  ipAddress    String
+  macAddress   String
+  errorMessage String
+  recordTime   DateTime @default(now())
+  users        users?   @relation(fields: [usersId], references: [id])
+  usersId      String?
 }
