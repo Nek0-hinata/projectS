@@ -11,6 +11,9 @@ dependencies:
   '@ant-design/nextjs-registry':
     specifier: ^1.0.0
     version: 1.0.0(@ant-design/cssinjs@1.20.0)(antd@5.16.5)(next@14.2.3)(react-dom@18.3.1)(react@18.3.1)
+  '@faker-js/faker':
+    specifier: ^8.4.1
+    version: 8.4.1
   '@heroicons/react':
     specifier: ^2.1.3
     version: 2.1.3(react@18.3.1)
@@ -662,7 +665,6 @@ packages:
   /@faker-js/faker@8.4.1:
     resolution: {integrity: sha512-XQ3cU+Q8Uqmrbf2e0cIC/QN43sTBSC8KF12u29Mb47tWrt2hAgBXSgpZMj4Ao8Uk0iJcU99QsOCaIL8934obCg==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
-    dev: true
 
   /@glideapps/ts-necessities@2.2.3:
     resolution: {integrity: sha512-gXi0awOZLHk3TbW55GZLCPP6O+y/b5X1pBXKBVckFONSwF1z1E5ND2BGJsghQFah+pW7pkkyFb2VhUQI2qhL5w==}

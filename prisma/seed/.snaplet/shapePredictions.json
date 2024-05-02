@@ -23,36 +23,6 @@
   },
   {
     "schemaName": "public",
-    "tableName": "customers",
-    "predictions": [
-      {
-        "input": "public customers email",
-        "column": "email",
-        "shape": "EMAIL",
-        "confidence": 0.9727711081504822,
-        "context": "GENERAL",
-        "confidenceContext": 0
-      },
-      {
-        "input": "public customers image_url",
-        "column": "image_url",
-        "shape": "IMAGE_URL",
-        "confidence": 0.9773715734481812,
-        "context": "GENERAL",
-        "confidenceContext": 0
-      },
-      {
-        "input": "public customers name",
-        "column": "name",
-        "shape": "PERSON_FULL_NAME",
-        "confidence": 0.8645595908164978,
-        "context": "GENERAL",
-        "confidenceContext": 0
-      }
-    ]
-  },
-  {
-    "schemaName": "public",
     "tableName": "internetDetail",
     "predictions": [
       {
@@ -76,20 +46,6 @@
         "column": "macAddress",
         "shape": "MAC_ADDRESS",
         "confidence": 0.9929783940315247,
-        "context": "GENERAL",
-        "confidenceContext": 0
-      }
-    ]
-  },
-  {
-    "schemaName": "public",
-    "tableName": "invoices",
-    "predictions": [
-      {
-        "input": "public invoices status",
-        "column": "status",
-        "shape": "STATUS",
-        "confidence": 0.9923000335693359,
         "context": "GENERAL",
         "confidenceContext": 0
       }
@@ -128,20 +84,6 @@
         "column": "macAddress",
         "shape": "MAC_ADDRESS",
         "confidence": 0.9947227239608765,
-        "context": "GENERAL",
-        "confidenceContext": 0
-      }
-    ]
-  },
-  {
-    "schemaName": "public",
-    "tableName": "revenue",
-    "predictions": [
-      {
-        "input": "public revenue month",
-        "column": "month",
-        "shape": "FINANCE_TRANSACTION_DESCRIPTION",
-        "confidence": 0.29800745844841,
         "context": "GENERAL",
         "confidenceContext": 0
       }
