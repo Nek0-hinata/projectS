@@ -5,6 +5,8 @@ import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { User } from '@/app/lib/definitions';
 import prisma from '@/app/lib/prisma';
+import { updateWhenSignOut } from '@/app/lib/actions';
+import { faker } from '@faker-js/faker';
 
 async function getUser(email: string): Promise<User | null> {
   try {
@@ -23,21 +25,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
-      // The name to display on the sign in form (e.g. "Sign in with...")
-      // name: 'Credentials',
-      // `credentials` is used to generate a form on the sign in page.
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
-      // credentials: {
-      //   email: {
-      //     label: 'Email',
-      //     type: 'email',
-      //     placeholder: '输入您的邮箱',
-      //     required: true,
-      //   },
-      //   password: { label: 'Password', type: 'password', required: true },
-      // },
       async authorize(credentials) {
         const parsedCredentials = z
           .object({ email: z.string().email(), password: z.string().min(6) })
@@ -48,7 +35,20 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           if (!user) return null;
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
-          if (passwordsMatch) return user;
+          if (passwordsMatch) {
+            const id = user.id;
+            const newInternetDetail = await prisma.internetDetail.create({
+              data: {
+                macAddress: faker.internet.mac(), // 假设这是用户的MAC地址
+                ipAddress: faker.internet.ipv4(), // 假设这是用户的IP地址
+                userId: id,
+              },
+            });
+            return {
+              ...user,
+              internetDetailId: newInternetDetail.id,
+            };
+          }
         }
 
         console.log('Invalid credentials');
@@ -56,4 +56,25 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  events: {
+    async signOut(session) {
+      // @ts-ignore-expect
+      if (session?.token?.internetDetailId) {
+        // @ts-ignore-expect
+        await updateWhenSignOut(session.token.internetDetailId);
+      }
+    },
+  },
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        token.internetDetailId = user.internetDetailId;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      session.internetDetailId = token.internetDetailId as string;
+      return session;
+    },
+  },
 });

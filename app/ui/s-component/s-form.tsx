@@ -1,6 +1,6 @@
 import { Button, Form } from 'antd';
 import FormItem, { FormItemProps } from 'antd/lib/form/FormItem';
-import type { FormProps } from 'antd/lib/form/Form';
+import { FormProps, useForm } from 'antd/lib/form/Form';
 import { ComponentType } from 'react';
 
 export type FormItemType = FormItemProps & {
@@ -13,20 +13,35 @@ interface IProps<T> {
   formItems: FormItemType[];
   onFinish?: FormProps<T>['onFinish'];
   className?: string;
+  layout?: FormProps['layout'];
 }
 
 export default function SForm<T>({
   formItems,
   className,
   onFinish,
+  layout = 'vertical',
 }: IProps<T>) {
+  const [form] = useForm();
   return (
-    <Form className={className} layout={'vertical'} onFinish={onFinish}>
+    <Form form={form} className={className} layout={layout} onFinish={onFinish}>
       {formItems.map((item) => {
-        const { name, component: Component } = item;
+        const {
+          name,
+          component: Component,
+          label,
+          componentProps,
+          ...otherItem
+        } = item;
         return (
-          <FormItem key={name} {...item}>
-            {<Component {...item.componentProps} />}
+          <FormItem
+            className={'w-full'}
+            key={name}
+            label={label ?? name}
+            name={name}
+            {...otherItem}
+          >
+            {<Component {...componentProps} {...otherItem} />}
           </FormItem>
         );
       })}
