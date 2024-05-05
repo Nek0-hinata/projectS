@@ -1,5 +1,5 @@
 'use client';
-import SForm, { FormItemType } from '@/app/ui/s-form';
+import SForm, { FormItemType } from '@/app/ui/s-component/s-form';
 import { Input } from 'antd';
 import Password from 'antd/lib/input/Password';
 import { signIn } from 'next-auth/react';

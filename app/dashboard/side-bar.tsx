@@ -2,8 +2,7 @@
 import { Menu, MenuProps } from 'antd';
 import { Key, ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { signOut, useSession } from 'next-auth/react';
-import { updateWhenSignOut } from '@/app/lib/actions';
+import { signOut } from 'next-auth/react';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -40,13 +39,9 @@ export const items: MenuItem[] = [
 export default function SideBar() {
   const router = useRouter();
   const pathname = usePathname();
-  const session = useSession();
 
   async function sideBarHandler(key: string) {
     if (key === SideBarEnum.SignOut) {
-      if (session.data) {
-        await updateWhenSignOut.call(null, session.data.internetDetailId);
-      }
       await signOut();
     } else {
       router.push(key);

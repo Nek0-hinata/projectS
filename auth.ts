@@ -5,6 +5,7 @@ import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { User } from '@/app/lib/definitions';
 import prisma from '@/app/lib/prisma';
+import { updateWhenSignOut } from '@/app/lib/actions';
 import { faker } from '@faker-js/faker';
 
 async function getUser(email: string): Promise<User | null> {
@@ -55,6 +56,15 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  events: {
+    async signOut(session) {
+      // @ts-ignore-expect
+      if (session?.token?.internetDetailId) {
+        // @ts-ignore-expect
+        await updateWhenSignOut(session.token.internetDetailId);
+      }
+    },
+  },
   callbacks: {
     jwt({ token, user }) {
       if (user) {

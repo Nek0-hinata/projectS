@@ -8,6 +8,10 @@ declare module 'next-auth' {
   interface User {
     internetDetailId: string;
   }
+
+  interface JWT {
+    internetDetailId: string;
+  }
 }
 
 declare global {
