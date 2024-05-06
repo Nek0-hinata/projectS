@@ -1,3 +1,4 @@
+'use client';
 import { Button, Form } from 'antd';
 import FormItem, { FormItemProps } from 'antd/lib/form/FormItem';
 import { FormProps, useForm } from 'antd/lib/form/Form';
@@ -23,8 +24,19 @@ export default function SForm<T>({
   layout = 'vertical',
 }: IProps<T>) {
   const [form] = useForm();
+
+  function handleOnFinish(value: T) {
+    onFinish && onFinish(value);
+    form.resetFields();
+  }
+
   return (
-    <Form form={form} className={className} layout={layout} onFinish={onFinish}>
+    <Form
+      form={form}
+      className={className}
+      layout={layout}
+      onFinish={handleOnFinish}
+    >
       {formItems.map((item) => {
         const {
           name,

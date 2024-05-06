@@ -1,11 +1,12 @@
-'use client';
-import { Button } from 'antd';
-import { signOut } from 'next-auth/react';
+import ImportArticle from '@/app/dashboard/import-article/client-component';
 
-export default function Page() {
+export default async function Page() {
   return (
-    <>
-      <Button onClick={() => signOut()}>退出登录</Button>
-    </>
+    <div className={'w-full'}>
+      <div>文章导入</div>
+      <div className={'m-auto mt-20 w-1/2'}>
+        <ImportArticle />
+      </div>
+    </div>
   );
 }

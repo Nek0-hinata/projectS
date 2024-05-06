@@ -103,3 +103,12 @@ export async function getAllArticle() {
 export async function getAllTags() {
   return prisma.tag.findMany();
 }
+
+export async function createArticle(title: string, content: string) {
+  return prisma.article.create({
+    data: {
+      title,
+      content,
+    },
+  });
+}

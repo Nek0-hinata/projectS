@@ -1,5 +1,5 @@
 import STable from '@/app/ui/s-component/s-table';
-import { columns, IDataType } from '@/app/dashboard/documents/clientComponent';
+import { columns, IDataType } from '@/app/dashboard/documents/client-component';
 import { getAllArticle } from '@/app/lib/actions';
 import { lusitana } from '@/app/ui/fonts';
 
