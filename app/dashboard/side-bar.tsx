@@ -9,8 +9,9 @@ type MenuItem = Required<MenuProps>['items'][number];
 export enum SideBarEnum {
   SignOut = 'sign_out',
   Dashboard = '/dashboard',
-  DashboardInvoices = '/dashboard/invoices',
-  DashboardCustomers = '/dashboard/customers',
+  Documents = '/dashboard/documents',
+  Tags = '/dashboard/tags',
+  ImportArticle = '/dashboard/import-article',
 }
 
 function getItemMiddleware(
@@ -28,12 +29,11 @@ function getItemMiddleware(
 }
 
 export const items: MenuItem[] = [
-  getItemMiddleware('Home', 'sub1', null, [
-    getItemMiddleware('Dashboard', SideBarEnum.Dashboard, null),
-    getItemMiddleware('Invoices', SideBarEnum.DashboardInvoices, null),
-    getItemMiddleware('Customers', SideBarEnum.DashboardCustomers, null),
-  ]),
-  getItemMiddleware('Sing out', SideBarEnum.SignOut, null),
+  getItemMiddleware('数据统计', SideBarEnum.Dashboard, null),
+  getItemMiddleware('数据集', SideBarEnum.Documents, null),
+  getItemMiddleware('标签', SideBarEnum.Tags, null),
+  getItemMiddleware('文章导入', SideBarEnum.ImportArticle, null),
+  getItemMiddleware('登出', SideBarEnum.SignOut, null),
 ];
 
 export default function SideBar() {
