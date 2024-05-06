@@ -44,14 +44,15 @@ export async function getInternetDetailById(id: string) {
   });
 }
 
-export async function getTrafficByUserEmail(
+export async function getMonthlyTrafficByUserEmail(
   email: string,
   year: number,
   month: number,
 ) {
   const startDate = new Date(year, month, 1);
   const endDate = new Date(year, month + 1, 1);
-  return prisma.users.findUnique({
+  const now = new Date();
+  return prisma.users.findUniqueOrThrow({
     where: {
       email,
     },
@@ -66,14 +67,21 @@ export async function getTrafficByUserEmail(
         },
         select: {
           currentTraffic: true,
+          signInTime: true,
         },
       },
       billingStatements: {
         select: {
           totalTraffic: true,
+          billingTime: true,
+        },
+        where: {
+          billingTime: {
+            gte: now,
+          },
         },
         orderBy: {
-          totalTraffic: 'desc',
+          billingTime: 'desc',
         },
       },
     },
