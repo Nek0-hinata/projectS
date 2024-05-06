@@ -1,15 +1,15 @@
 {
   "models": {
-    "_prisma_migrations": {
-      "id": "public._prisma_migrations",
+    "_SentenceToTag": {
+      "id": "public._SentenceToTag",
       "schemaName": "public",
-      "tableName": "_prisma_migrations",
+      "tableName": "_SentenceToTag",
       "fields": [
         {
-          "id": "public._prisma_migrations.id",
-          "name": "id",
-          "columnName": "id",
-          "type": "varchar",
+          "id": "public._SentenceToTag.A",
+          "name": "A",
+          "columnName": "A",
+          "type": "int4",
           "isRequired": true,
           "kind": "scalar",
           "isList": false,
@@ -17,110 +17,164 @@
           "sequence": false,
           "hasDefaultValue": false,
           "isId": true,
-          "maxLength": 36
-        },
-        {
-          "id": "public._prisma_migrations.checksum",
-          "name": "checksum",
-          "columnName": "checksum",
-          "type": "varchar",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": false,
-          "isId": false,
-          "maxLength": 64
-        },
-        {
-          "id": "public._prisma_migrations.finished_at",
-          "name": "finished_at",
-          "columnName": "finished_at",
-          "type": "timestamptz",
-          "isRequired": false,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": false,
-          "isId": false,
           "maxLength": null
         },
         {
-          "id": "public._prisma_migrations.migration_name",
-          "name": "migration_name",
-          "columnName": "migration_name",
-          "type": "varchar",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": false,
-          "isId": false,
-          "maxLength": 255
-        },
-        {
-          "id": "public._prisma_migrations.logs",
-          "name": "logs",
-          "columnName": "logs",
-          "type": "text",
-          "isRequired": false,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": false,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public._prisma_migrations.rolled_back_at",
-          "name": "rolled_back_at",
-          "columnName": "rolled_back_at",
-          "type": "timestamptz",
-          "isRequired": false,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": false,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public._prisma_migrations.started_at",
-          "name": "started_at",
-          "columnName": "started_at",
-          "type": "timestamptz",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": true,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public._prisma_migrations.applied_steps_count",
-          "name": "applied_steps_count",
-          "columnName": "applied_steps_count",
+          "id": "public._SentenceToTag.B",
+          "name": "B",
+          "columnName": "B",
           "type": "int4",
           "isRequired": true,
           "kind": "scalar",
           "isList": false,
           "isGenerated": false,
           "sequence": false,
+          "hasDefaultValue": false,
+          "isId": true,
+          "maxLength": null
+        },
+        {
+          "name": "sentence",
+          "type": "sentence",
+          "isRequired": true,
+          "kind": "object",
+          "relationName": "_SentenceToTagTosentence",
+          "relationFromFields": ["A"],
+          "relationToFields": ["id"],
+          "isList": false,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
+        },
+        {
+          "name": "tag",
+          "type": "tag",
+          "isRequired": true,
+          "kind": "object",
+          "relationName": "_SentenceToTagTotag",
+          "relationFromFields": ["B"],
+          "relationToFields": ["id"],
+          "isList": false,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
+        }
+      ],
+      "uniqueConstraints": []
+    },
+    "article": {
+      "id": "public.article",
+      "schemaName": "public",
+      "tableName": "article",
+      "fields": [
+        {
+          "id": "public.article.id",
+          "name": "id",
+          "columnName": "id",
+          "type": "int4",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": {
+            "identifier": "\"public\".\"article_id_seq\"",
+            "increment": 1,
+            "start": 1
+          },
+          "hasDefaultValue": true,
+          "isId": true,
+          "maxLength": null
+        },
+        {
+          "id": "public.article.title",
+          "name": "title",
+          "columnName": "title",
+          "type": "text",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.article.content",
+          "name": "content",
+          "columnName": "content",
+          "type": "text",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.article.createdAt",
+          "name": "createdAt",
+          "columnName": "createdAt",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
           "hasDefaultValue": true,
           "isId": false,
           "maxLength": null
+        },
+        {
+          "id": "public.article.updatedAt",
+          "name": "updatedAt",
+          "columnName": "updatedAt",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.article.articleStatus",
+          "name": "articleStatus",
+          "columnName": "articleStatus",
+          "type": "ArticleStatus",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "name": "sentence",
+          "type": "sentence",
+          "isRequired": false,
+          "kind": "object",
+          "relationName": "sentenceToarticle",
+          "relationFromFields": [],
+          "relationToFields": [],
+          "isList": true,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
         }
       ],
       "uniqueConstraints": [
         {
-          "name": "_prisma_migrations_pkey",
+          "name": "article_pkey",
           "fields": ["id"],
           "nullNotDistinct": false
         }
@@ -258,6 +312,34 @@
           "maxLength": null
         },
         {
+          "id": "public.internetDetail.signInTime",
+          "name": "signInTime",
+          "columnName": "signInTime",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.internetDetail.signOutTime",
+          "name": "signOutTime",
+          "columnName": "signOutTime",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
           "id": "public.internetDetail.macAddress",
           "name": "macAddress",
           "columnName": "macAddress",
@@ -286,6 +368,20 @@
           "maxLength": null
         },
         {
+          "id": "public.internetDetail.currentTraffic",
+          "name": "currentTraffic",
+          "columnName": "currentTraffic",
+          "type": "int4",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
           "id": "public.internetDetail.duration",
           "name": "duration",
           "columnName": "duration",
@@ -310,48 +406,6 @@
           "isGenerated": false,
           "sequence": false,
           "hasDefaultValue": false,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public.internetDetail.currentTraffic",
-          "name": "currentTraffic",
-          "columnName": "currentTraffic",
-          "type": "int4",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": true,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public.internetDetail.signInTime",
-          "name": "signInTime",
-          "columnName": "signInTime",
-          "type": "timestamp",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": true,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public.internetDetail.signOutTime",
-          "name": "signOutTime",
-          "columnName": "signOutTime",
-          "type": "timestamp",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": true,
           "isId": false,
           "maxLength": null
         },
@@ -490,6 +544,424 @@
         }
       ]
     },
+    "sentence": {
+      "id": "public.sentence",
+      "schemaName": "public",
+      "tableName": "sentence",
+      "fields": [
+        {
+          "id": "public.sentence.id",
+          "name": "id",
+          "columnName": "id",
+          "type": "int4",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": {
+            "identifier": "\"public\".\"sentence_id_seq\"",
+            "increment": 1,
+            "start": 1
+          },
+          "hasDefaultValue": true,
+          "isId": true,
+          "maxLength": null
+        },
+        {
+          "id": "public.sentence.content",
+          "name": "content",
+          "columnName": "content",
+          "type": "text",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.sentence.articleId",
+          "name": "articleId",
+          "columnName": "articleId",
+          "type": "int4",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.sentence.startPosition",
+          "name": "startPosition",
+          "columnName": "startPosition",
+          "type": "int4",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.sentence.endPosition",
+          "name": "endPosition",
+          "columnName": "endPosition",
+          "type": "int4",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.sentence.createdAt",
+          "name": "createdAt",
+          "columnName": "createdAt",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.sentence.updatedAt",
+          "name": "updatedAt",
+          "columnName": "updatedAt",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "name": "article",
+          "type": "article",
+          "isRequired": true,
+          "kind": "object",
+          "relationName": "sentenceToarticle",
+          "relationFromFields": ["articleId"],
+          "relationToFields": ["id"],
+          "isList": false,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
+        },
+        {
+          "name": "_SentenceToTag",
+          "type": "_SentenceToTag",
+          "isRequired": false,
+          "kind": "object",
+          "relationName": "_SentenceToTagTosentence",
+          "relationFromFields": [],
+          "relationToFields": [],
+          "isList": true,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
+        },
+        {
+          "name": "sentenceTag",
+          "type": "sentenceTag",
+          "isRequired": false,
+          "kind": "object",
+          "relationName": "sentenceTagTosentence",
+          "relationFromFields": [],
+          "relationToFields": [],
+          "isList": true,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
+        }
+      ],
+      "uniqueConstraints": [
+        {
+          "name": "sentence_pkey",
+          "fields": ["id"],
+          "nullNotDistinct": false
+        }
+      ]
+    },
+    "sentenceTag": {
+      "id": "public.sentenceTag",
+      "schemaName": "public",
+      "tableName": "sentenceTag",
+      "fields": [
+        {
+          "id": "public.sentenceTag.id",
+          "name": "id",
+          "columnName": "id",
+          "type": "int4",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": {
+            "identifier": "\"public\".\"sentenceTag_id_seq\"",
+            "increment": 1,
+            "start": 1
+          },
+          "hasDefaultValue": true,
+          "isId": true,
+          "maxLength": null
+        },
+        {
+          "id": "public.sentenceTag.sentenceId",
+          "name": "sentenceId",
+          "columnName": "sentenceId",
+          "type": "int4",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.sentenceTag.tagId",
+          "name": "tagId",
+          "columnName": "tagId",
+          "type": "int4",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.sentenceTag.status",
+          "name": "status",
+          "columnName": "status",
+          "type": "TagStatus",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.sentenceTag.reviewedBy",
+          "name": "reviewedBy",
+          "columnName": "reviewedBy",
+          "type": "text",
+          "isRequired": false,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.sentenceTag.createdAt",
+          "name": "createdAt",
+          "columnName": "createdAt",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.sentenceTag.updateAt",
+          "name": "updateAt",
+          "columnName": "updateAt",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "name": "sentence",
+          "type": "sentence",
+          "isRequired": true,
+          "kind": "object",
+          "relationName": "sentenceTagTosentence",
+          "relationFromFields": ["sentenceId"],
+          "relationToFields": ["id"],
+          "isList": false,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
+        },
+        {
+          "name": "tag",
+          "type": "tag",
+          "isRequired": true,
+          "kind": "object",
+          "relationName": "sentenceTagTotag",
+          "relationFromFields": ["tagId"],
+          "relationToFields": ["id"],
+          "isList": false,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
+        }
+      ],
+      "uniqueConstraints": [
+        {
+          "name": "sentenceTag_pkey",
+          "fields": ["id"],
+          "nullNotDistinct": false
+        }
+      ]
+    },
+    "tag": {
+      "id": "public.tag",
+      "schemaName": "public",
+      "tableName": "tag",
+      "fields": [
+        {
+          "id": "public.tag.id",
+          "name": "id",
+          "columnName": "id",
+          "type": "int4",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": {
+            "identifier": "\"public\".\"tag_id_seq\"",
+            "increment": 1,
+            "start": 1
+          },
+          "hasDefaultValue": true,
+          "isId": true,
+          "maxLength": null
+        },
+        {
+          "id": "public.tag.name",
+          "name": "name",
+          "columnName": "name",
+          "type": "text",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.tag.color",
+          "name": "color",
+          "columnName": "color",
+          "type": "text",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.tag.createdAt",
+          "name": "createdAt",
+          "columnName": "createdAt",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.tag.updatedAt",
+          "name": "updatedAt",
+          "columnName": "updatedAt",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "name": "_SentenceToTag",
+          "type": "_SentenceToTag",
+          "isRequired": false,
+          "kind": "object",
+          "relationName": "_SentenceToTagTotag",
+          "relationFromFields": [],
+          "relationToFields": [],
+          "isList": true,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
+        },
+        {
+          "name": "sentenceTag",
+          "type": "sentenceTag",
+          "isRequired": false,
+          "kind": "object",
+          "relationName": "sentenceTagTotag",
+          "relationFromFields": [],
+          "relationToFields": [],
+          "isList": true,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
+        }
+      ],
+      "uniqueConstraints": [
+        {
+          "name": "tag_pkey",
+          "fields": ["id"],
+          "nullNotDistinct": false
+        }
+      ]
+    },
     "users": {
       "id": "public.users",
       "schemaName": "public",
@@ -534,6 +1006,20 @@
           "isGenerated": false,
           "sequence": false,
           "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.users.status",
+          "name": "status",
+          "columnName": "status",
+          "type": "Status",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
           "isId": false,
           "maxLength": null
         },
@@ -594,10 +1080,10 @@
           "maxLength": null
         },
         {
-          "id": "public.users.status",
-          "name": "status",
-          "columnName": "status",
-          "type": "Status",
+          "id": "public.users.permission",
+          "name": "permission",
+          "columnName": "permission",
+          "type": "Permission",
           "isRequired": true,
           "kind": "scalar",
           "isList": false,
@@ -660,6 +1146,28 @@
     }
   },
   "enums": {
+    "ArticleStatus": {
+      "schemaName": "public",
+      "values": [
+        {
+          "name": "Finished"
+        },
+        {
+          "name": "UnFinished"
+        }
+      ]
+    },
+    "Permission": {
+      "schemaName": "public",
+      "values": [
+        {
+          "name": "Admin"
+        },
+        {
+          "name": "User"
+        }
+      ]
+    },
     "Status": {
       "schemaName": "public",
       "values": [
@@ -668,6 +1176,20 @@
         },
         {
           "name": "NORMAL"
+        }
+      ]
+    },
+    "TagStatus": {
+      "schemaName": "public",
+      "values": [
+        {
+          "name": "Approved"
+        },
+        {
+          "name": "Pending"
+        },
+        {
+          "name": "Rejected"
         }
       ]
     }

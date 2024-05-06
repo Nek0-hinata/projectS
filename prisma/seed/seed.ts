@@ -31,6 +31,12 @@ const main = async () => {
     },
   ]);
 
+  await seed.article((x) =>
+    x(10, {
+      articleStatus: 'UnFinished',
+    }),
+  );
+
   console.log('Database seeded successfully!');
 
   process.exit();

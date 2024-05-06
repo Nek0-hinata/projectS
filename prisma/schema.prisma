@@ -14,6 +14,11 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+enum Permission {
+  User
+  Admin
+}
+
 model users {
   id                String             @id @default(cuid())
   username          String
@@ -24,6 +29,7 @@ model users {
   phoneNumber       String
   email             String             @unique
   password          String
+  permission        Permission         @default(User)
   internetDetails   internetDetail[]
   billingStatements billingStatement[]
   log               log[]
@@ -66,45 +72,58 @@ enum Status {
   ABNORMAL
 }
 
-model Article {
-  id               Int               @id @default(autoincrement())
-  title            String
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  articleSentences ArticleSentence[]
+enum ArticleStatus {
+  Finished
+  UnFinished
 }
 
-model Sentence {
-  id               Int               @id @default(autoincrement())
-  content          String
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  articleSentences ArticleSentence[]
-  sentenceTags     SentenceTag[]
+model article {
+  id            Int           @id @default(autoincrement())
+  title         String
+  content       String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  articleStatus ArticleStatus @default(UnFinished)
+  sentences     sentence[]
 }
 
-model Tag {
-  id           Int           @id @default(autoincrement())
-  name         String
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  sentenceTags SentenceTag[]
+model sentence {
+  id            Int           @id @default(autoincrement())
+  content       String
+  articleId     Int
+  startPosition Int
+  endPosition   Int
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  article       article       @relation(fields: [articleId], references: [id])
+  tags          tag[]         @relation("SentenceToTag")
+  sentenceTag   sentenceTag[]
 }
 
-model ArticleSentence {
-  id         Int      @id @default(autoincrement())
-  articleId  Int
-  sentenceId Int
-  createdAt  DateTime @default(now())
-  Article    Article  @relation(fields: [articleId], references: [id])
-  Sentence   Sentence @relation(fields: [sentenceId], references: [id])
+model tag {
+  id          Int           @id @default(autoincrement())
+  name        String
+  color       String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  sentences   sentence[]    @relation("SentenceToTag")
+  sentenceTag sentenceTag[]
 }
 
-model SentenceTag {
-  id         Int      @id @default(autoincrement())
+enum TagStatus {
+  Pending
+  Approved
+  Rejected
+}
+
+model sentenceTag {
+  id         Int       @id @default(autoincrement())
   sentenceId Int
   tagId      Int
-  createdAt  DateTime @default(now())
-  Sentence   Sentence @relation(fields: [sentenceId], references: [id])
-  Tag        Tag      @relation(fields: [tagId], references: [id])
+  status     TagStatus @default(Pending) // 新增字段，表示标签的审核状态
+  reviewedBy String? // 新增字段，表示审核该标签的管理员
+  createdAt  DateTime  @default(now())
+  updateAt   DateTime  @updatedAt
+  sentence   sentence  @relation(fields: [sentenceId], references: [id])
+  tag        tag       @relation(fields: [tagId], references: [id])
 }

@@ -1,6 +1,28 @@
 [
   {
     "schemaName": "public",
+    "tableName": "article",
+    "predictions": [
+      {
+        "input": "public article content",
+        "column": "content",
+        "shape": "SYSTEM_FILE_TYPE",
+        "confidence": 0.2248231172561646,
+        "context": "GENERAL",
+        "confidenceContext": 0
+      },
+      {
+        "input": "public article title",
+        "column": "title",
+        "shape": "COMMERCE_PRODUCT_NAME",
+        "confidence": 0.6752994656562805,
+        "context": "GENERAL",
+        "confidenceContext": 0
+      }
+    ]
+  },
+  {
+    "schemaName": "public",
     "tableName": "billingStatement",
     "predictions": [
       {
@@ -84,6 +106,56 @@
         "column": "macAddress",
         "shape": "MAC_ADDRESS",
         "confidence": 0.9947227239608765,
+        "context": "GENERAL",
+        "confidenceContext": 0
+      }
+    ]
+  },
+  {
+    "schemaName": "public",
+    "tableName": "sentence",
+    "predictions": [
+      {
+        "input": "public sentence content",
+        "column": "content",
+        "shape": "POST_BODY",
+        "confidence": 0.5866231918334961,
+        "context": "GENERAL",
+        "confidenceContext": 0
+      }
+    ]
+  },
+  {
+    "schemaName": "public",
+    "tableName": "sentenceTag",
+    "predictions": [
+      {
+        "input": "public sentence_tag reviewed_by",
+        "column": "reviewedBy",
+        "shape": "DATABASE_COLUMN",
+        "confidence": 0.6503812074661255,
+        "context": "GENERAL",
+        "confidenceContext": 0
+      }
+    ]
+  },
+  {
+    "schemaName": "public",
+    "tableName": "tag",
+    "predictions": [
+      {
+        "input": "public tag color",
+        "column": "color",
+        "shape": "INTERNET_COLOR",
+        "confidence": 0.8664770722389221,
+        "context": "GENERAL",
+        "confidenceContext": 0
+      },
+      {
+        "input": "public tag name",
+        "column": "name",
+        "shape": "COMMERCE_PRODUCT_NAME",
+        "confidence": 0.9616398811340332,
         "context": "GENERAL",
         "confidenceContext": 0
       }
