@@ -1,6 +1,7 @@
 import STable from '@/app/ui/s-component/s-table';
 import { columns, IDataType } from '@/app/dashboard/documents/clientComponent';
 import { getAllArticle } from '@/app/lib/actions';
+import { lusitana } from '@/app/ui/fonts';
 
 export default async function Page() {
   const article = await getAllArticle();
@@ -11,12 +12,15 @@ export default async function Page() {
       id,
       content,
       articleStatus,
+      createdAt,
     };
   });
   return (
-    <div>
-      <h1>数据集</h1>
-      <STable<IDataType> dataSource={article} columns={columns} />
-    </div>
+    <main>
+      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
+        数据集
+      </h1>
+      <STable<IDataType> dataSource={dataSource} columns={columns} />
+    </main>
   );
 }

@@ -39,8 +39,12 @@
           "isRequired": true,
           "kind": "object",
           "relationName": "_SentenceToTagTosentence",
-          "relationFromFields": ["A"],
-          "relationToFields": ["id"],
+          "relationFromFields": [
+            "A"
+          ],
+          "relationToFields": [
+            "id"
+          ],
           "isList": false,
           "isId": false,
           "isGenerated": false,
@@ -53,8 +57,12 @@
           "isRequired": true,
           "kind": "object",
           "relationName": "_SentenceToTagTotag",
-          "relationFromFields": ["B"],
-          "relationToFields": ["id"],
+          "relationFromFields": [
+            "B"
+          ],
+          "relationToFields": [
+            "id"
+          ],
           "isList": false,
           "isId": false,
           "isGenerated": false,
@@ -63,6 +71,134 @@
         }
       ],
       "uniqueConstraints": []
+    },
+    "_prisma_migrations": {
+      "id": "public._prisma_migrations",
+      "schemaName": "public",
+      "tableName": "_prisma_migrations",
+      "fields": [
+        {
+          "id": "public._prisma_migrations.id",
+          "name": "id",
+          "columnName": "id",
+          "type": "varchar",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": true,
+          "maxLength": 36
+        },
+        {
+          "id": "public._prisma_migrations.checksum",
+          "name": "checksum",
+          "columnName": "checksum",
+          "type": "varchar",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": 64
+        },
+        {
+          "id": "public._prisma_migrations.finished_at",
+          "name": "finished_at",
+          "columnName": "finished_at",
+          "type": "timestamptz",
+          "isRequired": false,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public._prisma_migrations.migration_name",
+          "name": "migration_name",
+          "columnName": "migration_name",
+          "type": "varchar",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": 255
+        },
+        {
+          "id": "public._prisma_migrations.logs",
+          "name": "logs",
+          "columnName": "logs",
+          "type": "text",
+          "isRequired": false,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public._prisma_migrations.rolled_back_at",
+          "name": "rolled_back_at",
+          "columnName": "rolled_back_at",
+          "type": "timestamptz",
+          "isRequired": false,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public._prisma_migrations.started_at",
+          "name": "started_at",
+          "columnName": "started_at",
+          "type": "timestamptz",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public._prisma_migrations.applied_steps_count",
+          "name": "applied_steps_count",
+          "columnName": "applied_steps_count",
+          "type": "int4",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        }
+      ],
+      "uniqueConstraints": [
+        {
+          "name": "_prisma_migrations_pkey",
+          "fields": [
+            "id"
+          ],
+          "nullNotDistinct": false
+        }
+      ]
     },
     "article": {
       "id": "public.article",
@@ -91,20 +227,6 @@
           "id": "public.article.title",
           "name": "title",
           "columnName": "title",
-          "type": "text",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": false,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public.article.content",
-          "name": "content",
-          "columnName": "content",
           "type": "text",
           "isRequired": true,
           "kind": "scalar",
@@ -158,6 +280,20 @@
           "maxLength": null
         },
         {
+          "id": "public.article.content",
+          "name": "content",
+          "columnName": "content",
+          "type": "text",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
           "name": "sentence",
           "type": "sentence",
           "isRequired": false,
@@ -175,7 +311,9 @@
       "uniqueConstraints": [
         {
           "name": "article_pkey",
-          "fields": ["id"],
+          "fields": [
+            "id"
+          ],
           "nullNotDistinct": false
         }
       ]
@@ -275,8 +413,12 @@
           "isRequired": true,
           "kind": "object",
           "relationName": "billingStatementTousers",
-          "relationFromFields": ["userId"],
-          "relationToFields": ["id"],
+          "relationFromFields": [
+            "userId"
+          ],
+          "relationToFields": [
+            "id"
+          ],
           "isList": false,
           "isId": false,
           "isGenerated": false,
@@ -287,7 +429,9 @@
       "uniqueConstraints": [
         {
           "name": "billingStatement_pkey",
-          "fields": ["id"],
+          "fields": [
+            "id"
+          ],
           "nullNotDistinct": false
         }
       ]
@@ -309,34 +453,6 @@
           "sequence": false,
           "hasDefaultValue": false,
           "isId": true,
-          "maxLength": null
-        },
-        {
-          "id": "public.internetDetail.signInTime",
-          "name": "signInTime",
-          "columnName": "signInTime",
-          "type": "timestamp",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": true,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public.internetDetail.signOutTime",
-          "name": "signOutTime",
-          "columnName": "signOutTime",
-          "type": "timestamp",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": true,
-          "isId": false,
           "maxLength": null
         },
         {
@@ -364,20 +480,6 @@
           "isGenerated": false,
           "sequence": false,
           "hasDefaultValue": false,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public.internetDetail.currentTraffic",
-          "name": "currentTraffic",
-          "columnName": "currentTraffic",
-          "type": "int4",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": true,
           "isId": false,
           "maxLength": null
         },
@@ -410,13 +512,59 @@
           "maxLength": null
         },
         {
+          "id": "public.internetDetail.currentTraffic",
+          "name": "currentTraffic",
+          "columnName": "currentTraffic",
+          "type": "int4",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.internetDetail.signInTime",
+          "name": "signInTime",
+          "columnName": "signInTime",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.internetDetail.signOutTime",
+          "name": "signOutTime",
+          "columnName": "signOutTime",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
           "name": "users",
           "type": "users",
           "isRequired": true,
           "kind": "object",
           "relationName": "internetDetailTousers",
-          "relationFromFields": ["userId"],
-          "relationToFields": ["id"],
+          "relationFromFields": [
+            "userId"
+          ],
+          "relationToFields": [
+            "id"
+          ],
           "isList": false,
           "isId": false,
           "isGenerated": false,
@@ -427,7 +575,9 @@
       "uniqueConstraints": [
         {
           "name": "internetDetail_pkey",
-          "fields": ["id"],
+          "fields": [
+            "id"
+          ],
           "nullNotDistinct": false
         }
       ]
@@ -527,8 +677,12 @@
           "isRequired": false,
           "kind": "object",
           "relationName": "logTousers",
-          "relationFromFields": ["usersId"],
-          "relationToFields": ["id"],
+          "relationFromFields": [
+            "usersId"
+          ],
+          "relationToFields": [
+            "id"
+          ],
           "isList": false,
           "isId": false,
           "isGenerated": false,
@@ -539,7 +693,9 @@
       "uniqueConstraints": [
         {
           "name": "log_pkey",
-          "fields": ["id"],
+          "fields": [
+            "id"
+          ],
           "nullNotDistinct": false
         }
       ]
@@ -657,8 +813,12 @@
           "isRequired": true,
           "kind": "object",
           "relationName": "sentenceToarticle",
-          "relationFromFields": ["articleId"],
-          "relationToFields": ["id"],
+          "relationFromFields": [
+            "articleId"
+          ],
+          "relationToFields": [
+            "id"
+          ],
           "isList": false,
           "isId": false,
           "isGenerated": false,
@@ -697,7 +857,9 @@
       "uniqueConstraints": [
         {
           "name": "sentence_pkey",
-          "fields": ["id"],
+          "fields": [
+            "id"
+          ],
           "nullNotDistinct": false
         }
       ]
@@ -815,8 +977,12 @@
           "isRequired": true,
           "kind": "object",
           "relationName": "sentenceTagTosentence",
-          "relationFromFields": ["sentenceId"],
-          "relationToFields": ["id"],
+          "relationFromFields": [
+            "sentenceId"
+          ],
+          "relationToFields": [
+            "id"
+          ],
           "isList": false,
           "isId": false,
           "isGenerated": false,
@@ -829,8 +995,12 @@
           "isRequired": true,
           "kind": "object",
           "relationName": "sentenceTagTotag",
-          "relationFromFields": ["tagId"],
-          "relationToFields": ["id"],
+          "relationFromFields": [
+            "tagId"
+          ],
+          "relationToFields": [
+            "id"
+          ],
           "isList": false,
           "isId": false,
           "isGenerated": false,
@@ -841,7 +1011,9 @@
       "uniqueConstraints": [
         {
           "name": "sentenceTag_pkey",
-          "fields": ["id"],
+          "fields": [
+            "id"
+          ],
           "nullNotDistinct": false
         }
       ]
@@ -957,7 +1129,9 @@
       "uniqueConstraints": [
         {
           "name": "tag_pkey",
-          "fields": ["id"],
+          "fields": [
+            "id"
+          ],
           "nullNotDistinct": false
         }
       ]
@@ -1006,20 +1180,6 @@
           "isGenerated": false,
           "sequence": false,
           "hasDefaultValue": false,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public.users.status",
-          "name": "status",
-          "columnName": "status",
-          "type": "Status",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": true,
           "isId": false,
           "maxLength": null
         },
@@ -1076,6 +1236,20 @@
           "isGenerated": false,
           "sequence": false,
           "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.users.status",
+          "name": "status",
+          "columnName": "status",
+          "type": "Status",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
           "isId": false,
           "maxLength": null
         },
@@ -1139,7 +1313,9 @@
       "uniqueConstraints": [
         {
           "name": "users_pkey",
-          "fields": ["id"],
+          "fields": [
+            "id"
+          ],
           "nullNotDistinct": false
         }
       ]

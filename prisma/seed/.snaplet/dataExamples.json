@@ -1,9 +1,5 @@
 [
   {
-    "shape": "SYSTEM_FILE_TYPE",
-    "examples": ["application", "text", "image", "video", "audio", "font"]
-  },
-  {
     "shape": "PASSWORD",
     "examples": []
   },
@@ -294,6 +290,60 @@
   {
     "shape": "UUID",
     "examples": []
+  },
+  {
+    "input": "public article content",
+    "examples": [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "https://www.example.com/article1",
+      "Image: image1.jpg",
+      "This is an example article content with text and images.",
+      "Check out our latest article on public engagement.",
+      "Link to video: https://www.youtube.com/watch?v=video123",
+      "Stay tuned for more updates on our project.",
+      "Image: infographic.png",
+      "Interesting article on sustainability practices.",
+      "Read about our community outreach initiatives.",
+      "https://www.example.com/article2",
+      "Engage with our interactive content.",
+      "Join the conversation on social impact.",
+      "Don't miss our upcoming event details.",
+      "Image: photo_gallery.jpg",
+      "Explore the latest trends in technology.",
+      "Learn about our team's accomplishments.",
+      "Exciting news on project milestones.",
+      "Link to podcast: https://www.example.com/podcast123",
+      "Image: banner_ad.jpg",
+      "Discover the impact of our work in the community.",
+      "Connecting with our audience through storytelling.",
+      "Stay informed with our regular articles.",
+      "Engagement is key to our success.",
+      "https://www.example.com/article3",
+      "Image: illustration.png",
+      "In-depth analysis on project development process.",
+      "Find out how you can get involved.",
+      "Stay inspired by our success stories.",
+      "Link to webinar: https://www.example.com/webinar123",
+      "Image: cover_photo.jpg",
+      "Breaking news in the industry.",
+      "Enhancing public awareness with our articles.",
+      "New article series on environmental conservation.",
+      "Join us for a live Q&A session.",
+      "Image: map_visualization.png",
+      "Inspiring stories of change and impact.",
+      "Get a glimpse of our upcoming projects.",
+      "Updates on policy changes affecting the project.",
+      "Read about our research findings.",
+      "https://www.example.com/article4",
+      "Image: diagram.png",
+      "Engage with our expert opinions and insights.",
+      "Join our online community for more articles.",
+      "Highlighting the importance of collaboration.",
+      "Link to interactive tool: https://www.example.com/tool123",
+      "Image: slideshow.jpg",
+      "Behind the scenes of our latest project.",
+      "Join the discussion on future innovations."
+    ]
   },
   {
     "input": "public article title",

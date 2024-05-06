@@ -1,32 +1,17 @@
-'use client';
 import { Button } from 'antd';
-import { signOut } from 'next-auth/react';
-import { useRef, useState } from 'react';
-import { useTextSelection } from 'ahooks';
+import { getAllTags } from '@/app/lib/actions';
+import STable from '@/app/ui/s-component/s-table';
+import { columns, IDataType } from '@/app/dashboard/tags/clientComponent';
 
-export default function Page() {
-  const [start, setStart] = useState(0);
-  const [end, setEnd] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const a = useTextSelection(ref.current);
-  const handleMouseUp = () => {
-    const selection = window.getSelection();
-    if (selection?.rangeCount && selection?.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      setStart(range.startOffset);
-      setEnd(range.endOffset);
-      console.log(range);
-    }
-  };
+export default async function Page() {
+  const tagList = await getAllTags();
   return (
-    <>
-      <div onMouseUp={handleMouseUp} ref={ref}>
-        aabcsdashfjldsaewiorqe
-      </div>
-      <Button onClick={() => signOut()}>退出登录</Button>
-      <div>
-        {a.text} {a.left} {a.right} {start} {end}
-      </div>
-    </>
+    <div>
+      <div>标签管理</div>
+      <Button className={'float-right mb-5 mr-32'} type={'primary'}>
+        新增标签
+      </Button>
+      <STable<IDataType> dataSource={tagList} columns={columns} />
+    </div>
   );
 }

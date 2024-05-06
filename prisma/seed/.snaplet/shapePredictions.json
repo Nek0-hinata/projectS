@@ -6,7 +6,7 @@
       {
         "input": "public article content",
         "column": "content",
-        "shape": "SYSTEM_FILE_TYPE",
+        "shape": "POST_BODY",
         "confidence": 0.2248231172561646,
         "context": "GENERAL",
         "confidenceContext": 0

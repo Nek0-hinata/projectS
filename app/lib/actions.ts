@@ -99,3 +99,7 @@ export async function getBillingStatement(value: BillingValueType) {
 export async function getAllArticle() {
   return prisma.article.findMany();
 }
+
+export async function getAllTags() {
+  return prisma.tag.findMany();
+}

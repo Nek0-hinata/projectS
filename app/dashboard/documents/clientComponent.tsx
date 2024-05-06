@@ -2,6 +2,7 @@
 import { ArticleStatus } from '@prisma/client';
 import { Button, Space, TableProps, Tag } from 'antd';
 import { ITableDataType } from '@/app/ui/s-component/s-table';
+import dayjs from 'dayjs';
 
 export interface IDataType extends ITableDataType {
   id: number;
@@ -27,6 +28,9 @@ export const columns: TableProps<IDataType>['columns'] = [
   {
     title: 'CreateAt',
     dataIndex: 'createdAt',
+    render(_, { createdAt }) {
+      return <div>{dayjs(createdAt).format('YYYY/MM/DD HH:mm:ss')}</div>;
+    },
   },
   {
     title: 'Status',

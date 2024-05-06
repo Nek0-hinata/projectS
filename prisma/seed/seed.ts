@@ -32,10 +32,12 @@ const main = async () => {
   ]);
 
   await seed.article((x) =>
-    x(10, {
+    x(20, {
       articleStatus: 'UnFinished',
     }),
   );
+
+  await seed.tag((x) => x(5));
 
   console.log('Database seeded successfully!');
 
