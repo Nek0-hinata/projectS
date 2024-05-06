@@ -1,11 +1,22 @@
-'use client';
-import { Button } from 'antd';
-import { signOut } from 'next-auth/react';
+import STable from '@/app/ui/s-component/s-table';
+import { columns, IDataType } from '@/app/dashboard/documents/clientComponent';
+import { getAllArticle } from '@/app/lib/actions';
 
-export default function Page() {
+export default async function Page() {
+  const article = await getAllArticle();
+  const dataSource = article.map((item) => {
+    const { title, content, id, createdAt, articleStatus } = item;
+    return {
+      title,
+      id,
+      content,
+      articleStatus,
+    };
+  });
   return (
-    <>
-      <Button onClick={() => signOut()}>退出登录</Button>
-    </>
+    <div>
+      <h1>数据集</h1>
+      <STable<IDataType> dataSource={article} columns={columns} />
+    </div>
   );
 }

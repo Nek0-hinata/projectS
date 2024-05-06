@@ -95,3 +95,7 @@ export async function getBillingStatement(value: BillingValueType) {
     },
   });
 }
+
+export async function getAllArticle() {
+  return prisma.article.findMany();
+}
