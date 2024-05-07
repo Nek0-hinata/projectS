@@ -1,16 +1,16 @@
-import { PrismaClient } from '@prisma/client';
+import { Permission, PrismaClient } from '@prisma/client';
 
 declare module 'next-auth' {
   interface Session {
-    internetDetailId: string;
+    permission: Permission;
   }
 
   interface User {
-    internetDetailId: string;
+    permission: Permission;
   }
 
   interface JWT {
-    internetDetailId: string;
+    permission: Permission;
   }
 }
 

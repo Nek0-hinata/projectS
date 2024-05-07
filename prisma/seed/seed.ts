@@ -6,6 +6,7 @@
  */
 import { createSeedClient } from '@snaplet/seed';
 import bcrypt from 'bcrypt';
+import { Permission } from '@prisma/client';
 
 const main = async () => {
   const seed = await createSeedClient();
@@ -25,6 +26,11 @@ const main = async () => {
     {
       email: 'user@example.com',
       password: bcrypt.hashSync('123456', 10),
+    },
+    {
+      email: 'admin@example.com',
+      password: bcrypt.hashSync('123456', 10),
+      permission: Permission.Admin,
     },
   ]);
 

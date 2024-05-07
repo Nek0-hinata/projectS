@@ -3,10 +3,10 @@ import { authConfig } from './auth.config';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
-import { User } from '@/app/lib/definitions';
 import prisma from '@/app/lib/prisma';
+import { Permission } from '@prisma/client';
 
-async function getUser(email: string): Promise<User | null> {
+async function getUser(email: string) {
   try {
     return await prisma.users.findUnique({
       where: {
@@ -35,7 +35,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
           if (passwordsMatch) {
             const id = user.id;
-            const newInternetDetail = await prisma.users.update({
+            await prisma.users.update({
               where: {
                 id,
               },
@@ -45,7 +45,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             });
             return {
               ...user,
-              internetDetailId: newInternetDetail.id,
+              permission: user.permission,
             };
           }
         }
@@ -58,12 +58,12 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   callbacks: {
     jwt({ token, user }) {
       if (user) {
-        token.internetDetailId = user.internetDetailId;
+        token.permission = user.permission;
       }
       return token;
     },
     session({ session, token }) {
-      session.internetDetailId = token.internetDetailId as string;
+      session.permission = token.permission as Permission;
       return session;
     },
   },
