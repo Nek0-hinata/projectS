@@ -103,7 +103,7 @@ model sentence {
 model tag {
   id          Int           @id @default(autoincrement())
   name        String
-  color       String
+  color       String        @unique
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   sentences   sentence[]    @relation("SentenceToTag")

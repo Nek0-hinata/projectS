@@ -10,23 +10,25 @@ export type FormItemType = FormItemProps & {
   componentProps?: any;
 };
 
-interface IProps<T> {
+interface IProps<T> extends FormProps<T> {
   formItems: FormItemType[];
   onFinish?: FormProps<T>['onFinish'];
   className?: string;
   layout?: FormProps['layout'];
 }
 
-export default function SForm<T>({
-  formItems,
-  className,
-  onFinish,
-  layout = 'vertical',
-}: IProps<T>) {
+export default function SForm<T>(props: IProps<T>) {
   const [form] = useForm();
+  const {
+    formItems,
+    className,
+    onFinish,
+    layout = 'vertical',
+    ...otherProps
+  } = props;
 
-  function handleOnFinish(value: T) {
-    onFinish && onFinish(value);
+  async function handleOnFinish(value: T) {
+    await onFinish?.(value);
     form.resetFields();
   }
 
@@ -36,6 +38,7 @@ export default function SForm<T>({
       className={className}
       layout={layout}
       onFinish={handleOnFinish}
+      {...otherProps}
     >
       {formItems.map((item) => {
         const {

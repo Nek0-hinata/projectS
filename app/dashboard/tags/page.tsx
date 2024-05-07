@@ -1,17 +1,21 @@
-import { Button } from 'antd';
 import { getAllTags } from '@/app/lib/actions';
 import STable from '@/app/ui/s-component/s-table';
-import { columns, IDataType } from '@/app/dashboard/tags/client-component';
+import { columns, IDataType } from '@/app/dashboard/tags/config';
+import CreateTag from '@/app/dashboard/tags/create-tag';
 
 export default async function Page() {
   const tagList = await getAllTags();
+  const dataSource = tagList.map((item) => {
+    return {
+      ...item,
+      key: item.id,
+    };
+  });
   return (
     <div>
       <div>标签管理</div>
-      <Button className={'float-right mb-5 mr-32'} type={'primary'}>
-        新增标签
-      </Button>
-      <STable<IDataType> dataSource={tagList} columns={columns} />
+      <CreateTag />
+      <STable<IDataType> dataSource={dataSource} columns={columns} />
     </div>
   );
 }

@@ -3,16 +3,9 @@ import { Menu, MenuProps } from 'antd';
 import { Key, ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
+import { SideBarEnum } from '@/app/types/types';
 
 type MenuItem = Required<MenuProps>['items'][number];
-
-export enum SideBarEnum {
-  SignOut = 'sign_out',
-  Dashboard = '/dashboard',
-  Documents = '/dashboard/documents',
-  Tags = '/dashboard/tags',
-  ImportArticle = '/dashboard/import-article',
-}
 
 function getItemMiddleware(
   label: ReactNode,

@@ -5,6 +5,9 @@ import { AuthError } from 'next-auth';
 import { signIn } from '@/auth';
 import prisma from '@/app/lib/prisma';
 import { faker } from '@faker-js/faker';
+import { revalidatePath } from 'next/cache';
+
+import { SideBarEnum } from '@/app/types/types';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -100,15 +103,81 @@ export async function getAllArticle() {
   return prisma.article.findMany();
 }
 
-export async function getAllTags() {
-  return prisma.tag.findMany();
-}
-
 export async function createArticle(title: string, content: string) {
-  return prisma.article.create({
+  const createdArticle = await prisma.article.create({
     data: {
       title,
       content,
     },
   });
+  revalidatePath(SideBarEnum.Documents);
+  return createdArticle;
+}
+
+export async function deleteArticle(id: number) {
+  const deletedArticle = await prisma.article.delete({
+    where: {
+      id,
+    },
+  });
+  revalidatePath(SideBarEnum.Documents);
+  return deletedArticle;
+}
+
+export async function getAllTags() {
+  return prisma.tag.findMany();
+}
+
+export async function getTagWithColor(color: string) {
+  return prisma.tag.findMany({
+    where: {
+      color,
+    },
+  });
+}
+
+export async function getTagById(id: number) {
+  return prisma.tag.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
+export async function createTag(name: string, color: string) {
+  const createdTag = await prisma.tag.create({
+    data: {
+      name,
+      color,
+    },
+  });
+  revalidatePath(SideBarEnum.Tags);
+  return createdTag;
+}
+
+export async function editTag(
+  id: number,
+  data: {
+    color: string;
+    name: string;
+  },
+) {
+  const editedTag = await prisma.tag.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  revalidatePath(SideBarEnum.Tags);
+  return editedTag;
+}
+
+export async function deleteTag(id: number) {
+  const deletedTag = await prisma.tag.delete({
+    where: {
+      id,
+    },
+  });
+  revalidatePath(SideBarEnum.Tags);
+  return deletedTag;
 }

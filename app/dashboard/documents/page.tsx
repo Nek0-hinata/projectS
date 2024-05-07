@@ -8,6 +8,7 @@ export default async function Page() {
   const dataSource = article.map((item) => {
     const { title, content, id, createdAt, articleStatus } = item;
     return {
+      key: id,
       title,
       id,
       content,

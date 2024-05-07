@@ -1,6 +1,9 @@
 import { Table, TableProps } from 'antd';
+import { Key } from 'react';
 
-export interface ITableDataType {}
+export interface ITableDataType {
+  key: Key;
+}
 
 interface IProps<T> {
   dataSource: T[];
