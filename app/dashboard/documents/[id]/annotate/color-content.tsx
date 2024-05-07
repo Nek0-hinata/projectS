@@ -31,6 +31,21 @@ export default function ColorContent(props: IProps) {
 
   (colorList ?? [])
     .sort((a, b) => a.startPosition - b.startPosition)
+    .reduce(
+      (prev, cur) => {
+        const tail = prev.length - 1;
+        const last = prev[tail]?.endPosition ?? 0;
+        let startPosition = Math.max(cur.startPosition, last);
+        return [
+          ...prev,
+          {
+            ...cur,
+            startPosition,
+          },
+        ];
+      },
+      [] as typeof colorList,
+    )
     .forEach((item, index) => {
       // 添加未标记的文本部分
       if (item.startPosition > lastEndPosition) {
@@ -43,7 +58,7 @@ export default function ColorContent(props: IProps) {
       const Content = () => {
         return item.tags.map((item) => {
           return (
-            <div key={item.tag.name + item.tag.color} className={'flex'}>
+            <div key={item.tag.name + item.tag.color} className={'m-1 flex'}>
               <div>{item.tag.name}</div>
               <Tag className={'ml-1'} color={ColorMap[item.status]}>
                 {item.status}
