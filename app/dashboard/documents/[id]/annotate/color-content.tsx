@@ -1,3 +1,6 @@
+import { TagStatus } from '@prisma/client';
+import { Popover, Tag } from 'antd';
+
 export type ColorListType = {
   startPosition: number;
   endPosition: number;
@@ -6,8 +9,15 @@ export type ColorListType = {
       name: string;
       color: string;
     };
+    status: TagStatus;
   }[];
 }[];
+
+const ColorMap: Record<TagStatus, string> = {
+  [TagStatus.Approved]: 'green',
+  [TagStatus.Rejected]: 'red',
+  [TagStatus.Pending]: 'blue',
+};
 
 interface IProps {
   content: string;
@@ -30,12 +40,24 @@ export default function ColorContent(props: IProps) {
           </span>,
         );
       }
-
-      // 添加被标记的文本部分
+      const Content = () => {
+        return item.tags.map((item) => {
+          return (
+            <div key={item.tag.name + item.tag.color} className={'flex'}>
+              <div>{item.tag.name}</div>
+              <Tag className={'ml-1'} color={ColorMap[item.status]}>
+                {item.status}
+              </Tag>
+            </div>
+          );
+        });
+      };
       coloredContent.push(
-        <span key={index} style={{ color: item.tags[0].tag.color }}>
-          {content.slice(item.startPosition, item.endPosition)}
-        </span>,
+        <Popover key={index} content={Content}>
+          <span style={{ color: item.tags[0].tag.color }}>
+            {content.slice(item.startPosition, item.endPosition)}
+          </span>
+        </Popover>,
       );
 
       lastEndPosition = item.endPosition;

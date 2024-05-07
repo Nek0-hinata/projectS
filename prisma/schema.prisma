@@ -72,6 +72,8 @@ model tag {
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
   sentences sentenceTag[]
+  TagLink   TagLink[]
+  TagLink   TagLink[]
 }
 
 enum TagStatus {
@@ -91,4 +93,17 @@ model sentenceTag {
   reviewedBy String? // 新增字段，表示审核该标签的管理员
 
   @@id([sentenceId, tagId])
+}
+
+// 新增模型，表示tag与tag的关联
+model TagLink {
+  id          Int      @id @default(autoincrement())
+  tagId       Int
+  linkedTagId Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tag         tag      @relation("TagLinks", fields: [tagId], references: [id])
+  linkedTag   tag      @relation("LinkedTags", fields: [linkedTagId], references: [id])
+
+  @@unique([tagId, linkedTagId])
 }

@@ -27,10 +27,22 @@ interface IRange {
   text: string;
 }
 
+interface ITextSelection {
+  height: number;
+  left: number;
+  top: number;
+}
+
 const initRange = {
   start: 0,
   end: 0,
   text: '',
+};
+
+const initTextSelection = {
+  height: 0,
+  left: 0,
+  top: 0,
 };
 
 export default function AnnotateArticle(props: IProps) {
@@ -38,8 +50,11 @@ export default function AnnotateArticle(props: IProps) {
   const [range, setRange] = useState<IRange>(initRange);
   const [open, setOpen] = useState(false);
   const [colorList, setColorList] = useState<ColorListType>([]);
+  const [textSelection, setTextSelection] =
+    useState<ITextSelection>(initTextSelection);
   const ref = useRef<HTMLDivElement>(null);
   const { top, left, width, height } = useTextSelection(ref.current);
+
   const items: IAnnotationDropdownProps['items'] = tagList.map((item) => {
     const { id, color, name } = item;
 
@@ -94,6 +109,16 @@ export default function AnnotateArticle(props: IProps) {
     getSentenceAndTagWithArticleId(articleId).then((res) => setColorList(res));
   }, [articleId]);
 
+  useEffect(() => {
+    if (top && left) {
+      setTextSelection({
+        top,
+        left,
+        height,
+      });
+    }
+  }, [height, left, top]);
+
   return (
     <div>
       <h1 className={'text-2xl'}>{title}</h1>
@@ -104,16 +129,7 @@ export default function AnnotateArticle(props: IProps) {
       >
         <ColorContent content={content} colorList={colorList} />
       </div>
-      <AnnotationDropdown
-        open={open}
-        span={{
-          height,
-          width,
-          top,
-          left,
-        }}
-        items={items}
-      />
+      <AnnotationDropdown open={open} span={textSelection} items={items} />
       <div className={'flex w-full items-center justify-center'}>
         <Button
           className={'mt-20 w-1/3'}

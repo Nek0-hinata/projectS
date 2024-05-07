@@ -203,6 +203,7 @@ export async function getSentenceAndTagWithArticleId(id: number) {
               color: true,
             },
           },
+          status: true,
         },
       },
     },
