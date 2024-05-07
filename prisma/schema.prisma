@@ -66,14 +66,14 @@ model sentence {
 }
 
 model tag {
-  id        Int           @id @default(autoincrement())
-  name      String
-  color     String        @unique
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  sentences sentenceTag[]
-  TagLink   TagLink[]
-  TagLink   TagLink[]
+  id         Int           @id @default(autoincrement())
+  name       String
+  color      String        @unique
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  sentences  sentenceTag[]
+  tagLinks   tagLink[]     @relation("TagLinks")
+  linkedTags tagLink[]     @relation("LinkedTags")
 }
 
 enum TagStatus {
@@ -96,7 +96,7 @@ model sentenceTag {
 }
 
 // 新增模型，表示tag与tag的关联
-model TagLink {
+model tagLink {
   id          Int      @id @default(autoincrement())
   tagId       Int
   linkedTagId Int

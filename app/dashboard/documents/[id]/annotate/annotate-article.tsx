@@ -2,7 +2,7 @@
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { useTextSelection } from 'ahooks';
 import AnnotationDropdown, {
-  IAnnotationDropdownProps,
+  ItemType,
 } from '@/app/ui/dashboard/annotation-dropdown';
 import { tag as Tag } from '@prisma/client';
 import { Button, ColorPicker, message } from 'antd';
@@ -55,7 +55,7 @@ export default function AnnotateArticle(props: IProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { top, left, width, height } = useTextSelection(ref.current);
 
-  const items: IAnnotationDropdownProps['items'] = tagList.map((item) => {
+  const items: ItemType[] = tagList.map((item) => {
     const { id, color, name } = item;
 
     async function handleOnTagClick() {
