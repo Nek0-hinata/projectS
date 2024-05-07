@@ -8,6 +8,7 @@ import { faker } from '@faker-js/faker';
 import { revalidatePath } from 'next/cache';
 
 import { SideBarEnum } from '@/app/types/types';
+import { sentence as Sentence } from '@prisma/client';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -103,6 +104,14 @@ export async function getAllArticle() {
   return prisma.article.findMany();
 }
 
+export async function getArticleById(id: number) {
+  return prisma.article.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
 export async function createArticle(title: string, content: string) {
   const createdArticle = await prisma.article.create({
     data: {
@@ -180,4 +189,44 @@ export async function deleteTag(id: number) {
   });
   revalidatePath(SideBarEnum.Tags);
   return deletedTag;
+}
+
+export async function createOrGetSentenceWithArticleId(
+  articleId: number,
+  sentence: {
+    content: string;
+    startPosition: number;
+    endPosition: number;
+  },
+): Promise<Sentence> {
+  const { content, startPosition, endPosition } = sentence;
+  const sentenceList = await prisma.sentence.findFirst({
+    where: {
+      startPosition,
+      endPosition,
+      articleId,
+    },
+  });
+
+  if (sentenceList) {
+    return sentenceList;
+  } else {
+    return prisma.sentence.create({
+      data: {
+        content,
+        startPosition,
+        endPosition,
+        articleId,
+      },
+    });
+  }
+}
+
+export async function createSentenceTag(sentenceId: number, tagId: number) {
+  return prisma.sentenceTag.create({
+    data: {
+      sentenceId,
+      tagId,
+    },
+  });
 }

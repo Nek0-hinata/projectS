@@ -5,6 +5,7 @@ import { ColorPicker, Input, message } from 'antd';
 import { createTag, editTag, getTagWithColor } from '@/app/lib/actions';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { SideBarEnum } from '@/app/types/types';
+import { Color } from 'antd/lib/color-picker';
 
 const item: FormItemType[] = [
   {
@@ -26,11 +27,15 @@ const item: FormItemType[] = [
 
 interface IFormItemType {
   name: string;
-  color: string;
+  color: Color;
 }
 
+type InitialValue = Omit<IFormItemType, 'color'> & {
+  color: string;
+};
+
 interface IProps {
-  initialValue?: IFormItemType;
+  initialValue?: InitialValue;
 }
 
 export function CreateTagForm(props: IProps) {
@@ -40,20 +45,26 @@ export function CreateTagForm(props: IProps) {
 
   async function handleOnCreate(value: IFormItemType) {
     const { color, name } = value;
-    const findExistedColor = await getTagWithColor(color);
-    if (findExistedColor) {
+    const colorHex = color.toHexString();
+    const findExistedColor = await getTagWithColor(colorHex);
+    if (findExistedColor.length) {
       message.warning('已有相同颜色，请考虑创建不同颜色的tag');
       return;
     }
-    const createdTag = await createTag(name, color);
+    const createdTag = await createTag(name, colorHex);
     if (createdTag) {
       message.success('标签创建成功');
     }
   }
 
   async function handleOnEdit(value: IFormItemType) {
+    const { name, color } = value;
+    const colorHex = color.toHexString();
     const id = Number(tagID);
-    const editedTag = await editTag(id, value);
+    const editedTag = await editTag(id, {
+      name,
+      color: colorHex,
+    });
     if (editedTag) {
       message.success(`已成功编辑tag${id}`);
       router.replace(SideBarEnum.Tags);
