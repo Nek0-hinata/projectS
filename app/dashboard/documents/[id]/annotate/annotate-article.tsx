@@ -1,15 +1,18 @@
 'use client';
-import { MouseEventHandler, useRef, useState } from 'react';
+import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { useTextSelection } from 'ahooks';
 import AnnotationDropdown, {
   IAnnotationDropdownProps,
 } from '@/app/ui/dashboard/annotation-dropdown';
 import { tag as Tag } from '@prisma/client';
-import { ColorPicker } from 'antd';
+import { Button, ColorPicker, message } from 'antd';
 import {
-  createOrGetSentenceWithArticleId,
-  createSentenceTag,
+  createSentenceTagWithArticleId,
+  getSentenceAndTagWithArticleId,
 } from '@/app/lib/actions';
+import ColorContent, {
+  ColorListType,
+} from '@/app/dashboard/documents/[id]/annotate/color-content';
 
 interface IProps {
   title: string;
@@ -21,35 +24,37 @@ interface IProps {
 interface IRange {
   start: number;
   end: number;
+  text: string;
 }
 
 const initRange = {
   start: 0,
   end: 0,
+  text: '',
 };
 
-export default function AnnotateArticle({
-  title,
-  articleId,
-  content,
-  tagList,
-}: IProps) {
+export default function AnnotateArticle(props: IProps) {
+  const { title, articleId, content, tagList } = props;
   const [range, setRange] = useState<IRange>(initRange);
   const [open, setOpen] = useState(false);
+  const [colorList, setColorList] = useState<ColorListType>([]);
   const ref = useRef<HTMLDivElement>(null);
-  const textSelection = useTextSelection(ref.current);
-  const { top, left, width, height, text } = textSelection;
+  const { top, left, width, height } = useTextSelection(ref.current);
   const items: IAnnotationDropdownProps['items'] = tagList.map((item) => {
     const { id, color, name } = item;
 
     async function handleOnTagClick() {
-      const sentence = await createOrGetSentenceWithArticleId(articleId, {
-        content: text,
+      const sentence = await createSentenceTagWithArticleId(articleId, id, {
+        content: range.text,
         startPosition: range.start,
         endPosition: range.end,
       });
-
-      const sentenceTag = await createSentenceTag(sentence.id, id);
+      if (sentence) {
+        message.success('标注tag成功');
+        const colorList = await getSentenceAndTagWithArticleId(articleId);
+        setColorList(colorList);
+        setOpen(false);
+      }
     }
 
     return {
@@ -68,12 +73,15 @@ export default function AnnotateArticle({
     const selection = window.getSelection();
     setOpen(true);
     if (selection?.rangeCount && selection?.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
+      const selectedContent = selection.toString();
+      const regexp = new RegExp(selectedContent);
+      const start = content.search(regexp);
+      const end = start + selectedContent.length;
       setRange({
-        start: range.startOffset,
-        end: range.endOffset,
+        start,
+        end,
+        text: selectedContent,
       });
-      console.log(range);
     }
   };
 
@@ -81,6 +89,10 @@ export default function AnnotateArticle({
     setOpen(false);
     setRange(initRange);
   }
+
+  useEffect(() => {
+    getSentenceAndTagWithArticleId(articleId).then((res) => setColorList(res));
+  }, [articleId]);
 
   return (
     <div>
@@ -90,7 +102,7 @@ export default function AnnotateArticle({
         onMouseUp={handleMouseUp}
         ref={ref}
       >
-        {content}
+        <ColorContent content={content} colorList={colorList} />
       </div>
       <AnnotationDropdown
         open={open}
@@ -102,8 +114,14 @@ export default function AnnotateArticle({
         }}
         items={items}
       />
-      <div onClick={handleOnClick}>
-        {range.start} {range.end}
+      <div className={'flex w-full items-center justify-center'}>
+        <Button
+          className={'mt-20 w-1/3'}
+          type={'primary'}
+          onClick={handleOnClick}
+        >
+          关闭标注窗口
+        </Button>
       </div>
     </div>
   );

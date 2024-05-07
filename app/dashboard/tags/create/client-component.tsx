@@ -27,7 +27,7 @@ const item: FormItemType[] = [
 
 interface IFormItemType {
   name: string;
-  color: Color;
+  color: Color | string;
 }
 
 type InitialValue = Omit<IFormItemType, 'color'> & {
@@ -38,6 +38,10 @@ interface IProps {
   initialValue?: InitialValue;
 }
 
+function colorToHex(color: Color | string): string {
+  return typeof color === 'string' ? color : color.toHexString();
+}
+
 export function CreateTagForm(props: IProps) {
   const params = useSearchParams();
   const router = useRouter();
@@ -45,7 +49,7 @@ export function CreateTagForm(props: IProps) {
 
   async function handleOnCreate(value: IFormItemType) {
     const { color, name } = value;
-    const colorHex = color.toHexString();
+    const colorHex = colorToHex(color);
     const findExistedColor = await getTagWithColor(colorHex);
     if (findExistedColor.length) {
       message.warning('已有相同颜色，请考虑创建不同颜色的tag');
@@ -59,7 +63,7 @@ export function CreateTagForm(props: IProps) {
 
   async function handleOnEdit(value: IFormItemType) {
     const { name, color } = value;
-    const colorHex = color.toHexString();
+    const colorHex = colorToHex(color);
     const id = Number(tagID);
     const editedTag = await editTag(id, {
       name,

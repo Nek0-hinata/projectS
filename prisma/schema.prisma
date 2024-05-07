@@ -20,51 +20,17 @@ enum Permission {
 }
 
 model users {
-  id                String             @id @default(cuid())
-  username          String
-  name              String
-  status            Status             @default(NORMAL)
+  id             String     @id @default(cuid())
+  username       String
+  name           String
+  status         Status     @default(NORMAL)
   // 身份证
-  idNumber          String
-  phoneNumber       String
-  email             String             @unique
-  password          String
-  permission        Permission         @default(User)
-  internetDetails   internetDetail[]
-  billingStatements billingStatement[]
-  log               log[]
-}
-
-model internetDetail {
-  id             String   @id @default(cuid())
-  signInTime     DateTime @default(now())
-  signOutTime    DateTime @default(now())
-  macAddress     String
-  ipAddress      String
-  currentTraffic Int      @default(0)
-  duration       Int      @default(0)
-  userId         String
-  users          users    @relation(fields: [userId], references: [id])
-}
-
-model billingStatement {
-  id              String   @id @default(cuid())
-  product         String
-  totalTraffic    Float
-  totalOnlineTime Int
-  billingTime     DateTime
-  userId          String
-  users           users    @relation(fields: [userId], references: [id])
-}
-
-model log {
-  id           String   @id @default(cuid())
-  ipAddress    String
-  macAddress   String
-  errorMessage String
-  recordTime   DateTime @default(now())
-  users        users?   @relation(fields: [usersId], references: [id])
-  usersId      String?
+  idNumber       String
+  phoneNumber    String
+  lastSignInTime DateTime
+  email          String     @unique
+  password       String
+  permission     Permission @default(User)
 }
 
 enum Status {
@@ -96,18 +62,16 @@ model sentence {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   article       article       @relation(fields: [articleId], references: [id])
-  tags          tag[]         @relation("SentenceToTag")
-  sentenceTag   sentenceTag[]
+  tags          sentenceTag[]
 }
 
 model tag {
-  id          Int           @id @default(autoincrement())
-  name        String
-  color       String        @unique
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  sentences   sentence[]    @relation("SentenceToTag")
-  sentenceTag sentenceTag[]
+  id        Int           @id @default(autoincrement())
+  name      String
+  color     String        @unique
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  sentences sentenceTag[]
 }
 
 enum TagStatus {
@@ -117,13 +81,14 @@ enum TagStatus {
 }
 
 model sentenceTag {
-  id         Int       @id @default(autoincrement())
   sentenceId Int
   tagId      Int
-  status     TagStatus @default(Pending) // 新增字段，表示标签的审核状态
-  reviewedBy String? // 新增字段，表示审核该标签的管理员
   createdAt  DateTime  @default(now())
   updateAt   DateTime  @updatedAt
   sentence   sentence  @relation(fields: [sentenceId], references: [id])
   tag        tag       @relation(fields: [tagId], references: [id])
+  status     TagStatus @default(Pending) // 新增字段，表示标签的审核状态
+  reviewedBy String? // 新增字段，表示审核该标签的管理员
+
+  @@id([sentenceId, tagId])
 }

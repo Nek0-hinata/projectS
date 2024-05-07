@@ -1,10 +1,17 @@
+export type ColorListType = {
+  startPosition: number;
+  endPosition: number;
+  tags: {
+    tag: {
+      name: string;
+      color: string;
+    };
+  }[];
+}[];
+
 interface IProps {
   content: string;
-  colorList: {
-    startPosition: number;
-    endPosition: number;
-    color: string;
-  }[];
+  colorList: ColorListType;
 }
 
 export default function ColorContent(props: IProps) {
@@ -12,7 +19,7 @@ export default function ColorContent(props: IProps) {
   let lastEndPosition = 0;
   let coloredContent = [];
 
-  colorList
+  (colorList ?? [])
     .sort((a, b) => a.startPosition - b.startPosition)
     .forEach((item, index) => {
       // 添加未标记的文本部分
@@ -26,7 +33,7 @@ export default function ColorContent(props: IProps) {
 
       // 添加被标记的文本部分
       coloredContent.push(
-        <span key={index} style={{ color: item.color }}>
+        <span key={index} style={{ color: item.tags[0].tag.color }}>
           {content.slice(item.startPosition, item.endPosition)}
         </span>,
       );
@@ -41,5 +48,5 @@ export default function ColorContent(props: IProps) {
     );
   }
 
-  return <div>{coloredContent.map((item) => item)}</div>;
+  return <p>{coloredContent.map((item) => item)}</p>;
 }

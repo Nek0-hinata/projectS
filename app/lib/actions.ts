@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { AuthError } from 'next-auth';
 import { signIn } from '@/auth';
 import prisma from '@/app/lib/prisma';
-import { faker } from '@faker-js/faker';
 import { revalidatePath } from 'next/cache';
 
 import { SideBarEnum } from '@/app/types/types';
@@ -37,67 +36,6 @@ export async function authenticate(
     }
     throw error;
   }
-}
-
-export async function updateWhenSignOut(id: string) {
-  const now = new Date();
-  const curInternetDetail = await prisma.internetDetail.findUnique({
-    where: {
-      id,
-    },
-    select: {
-      signInTime: true,
-    },
-  });
-  if (curInternetDetail) {
-    const signInTime = new Date(curInternetDetail.signInTime);
-    const duration = now.getTime() - signInTime.getTime();
-    await prisma.internetDetail.update({
-      where: {
-        id,
-      },
-      data: {
-        signOutTime: now.toISOString(),
-        duration,
-        currentTraffic: duration * faker.number.int({ min: 5, max: 25 }),
-      },
-    });
-  }
-}
-
-export type BillingValueType = {
-  endDate: string;
-  totalTraffic: number;
-  product: string;
-};
-
-export async function createBillingStatementByUserEmail(
-  email: string,
-  billingValue: BillingValueType,
-) {
-  return prisma.users.update({
-    where: {
-      email,
-    },
-    data: {
-      billingStatements: {
-        create: {
-          totalTraffic: billingValue.totalTraffic,
-          product: billingValue.product,
-          billingTime: billingValue.endDate,
-          totalOnlineTime: 0,
-        },
-      },
-    },
-  });
-}
-
-export async function getBillingStatement(value: BillingValueType) {
-  return prisma.billingStatement.findMany({
-    where: {
-      billingTime: value.endDate,
-    },
-  });
 }
 
 export async function getAllArticle() {
@@ -191,8 +129,9 @@ export async function deleteTag(id: number) {
   return deletedTag;
 }
 
-export async function createOrGetSentenceWithArticleId(
+export async function createSentenceTagWithArticleId(
   articleId: number,
+  tagId: number,
   sentence: {
     content: string;
     startPosition: number;
@@ -200,33 +139,72 @@ export async function createOrGetSentenceWithArticleId(
   },
 ): Promise<Sentence> {
   const { content, startPosition, endPosition } = sentence;
-  const sentenceList = await prisma.sentence.findFirst({
+  const findOldList = await prisma.sentence.findFirst({
     where: {
       startPosition,
       endPosition,
       articleId,
     },
   });
-
-  if (sentenceList) {
-    return sentenceList;
+  let resList;
+  if (findOldList) {
+    resList = await prisma.sentence.update({
+      where: {
+        id: findOldList.id,
+      },
+      data: {
+        tags: {
+          create: {
+            tag: {
+              connect: {
+                id: tagId,
+              },
+            },
+          },
+        },
+      },
+    });
   } else {
-    return prisma.sentence.create({
+    resList = await prisma.sentence.create({
       data: {
         content,
         startPosition,
         endPosition,
         articleId,
+        tags: {
+          create: {
+            tag: {
+              connect: {
+                id: tagId,
+              },
+            },
+          },
+        },
       },
     });
   }
+  return resList;
 }
 
-export async function createSentenceTag(sentenceId: number, tagId: number) {
-  return prisma.sentenceTag.create({
-    data: {
-      sentenceId,
-      tagId,
+export async function getSentenceAndTagWithArticleId(id: number) {
+  return prisma.sentence.findMany({
+    where: {
+      articleId: id,
+    },
+    select: {
+      content: true,
+      startPosition: true,
+      endPosition: true,
+      tags: {
+        select: {
+          tag: {
+            select: {
+              name: true,
+              color: true,
+            },
+          },
+        },
+      },
     },
   });
 }

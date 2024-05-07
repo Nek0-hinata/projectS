@@ -16,9 +16,6 @@ const main = async () => {
   // Seed the database with 10 users
   await seed.users((x) =>
     x(5, {
-      internetDetails: (x) => x(5),
-      billingStatements: (x) => x(5),
-      log: (x) => x(10),
       // Use the fixed password
       password: bcrypt.hashSync('123456', 10),
     }),

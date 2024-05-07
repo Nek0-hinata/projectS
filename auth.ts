@@ -5,8 +5,6 @@ import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { User } from '@/app/lib/definitions';
 import prisma from '@/app/lib/prisma';
-import { updateWhenSignOut } from '@/app/lib/actions';
-import { faker } from '@faker-js/faker';
 
 async function getUser(email: string): Promise<User | null> {
   try {
@@ -37,11 +35,12 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
           if (passwordsMatch) {
             const id = user.id;
-            const newInternetDetail = await prisma.internetDetail.create({
+            const newInternetDetail = await prisma.users.update({
+              where: {
+                id,
+              },
               data: {
-                macAddress: faker.internet.mac(), // 假设这是用户的MAC地址
-                ipAddress: faker.internet.ipv4(), // 假设这是用户的IP地址
-                userId: id,
+                lastSignInTime: new Date(),
               },
             });
             return {
@@ -56,15 +55,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       },
     }),
   ],
-  events: {
-    async signOut(session) {
-      // @ts-ignore-expect
-      if (session?.token?.internetDetailId) {
-        // @ts-ignore-expect
-        await updateWhenSignOut(session.token.internetDetailId);
-      }
-    },
-  },
   callbacks: {
     jwt({ token, user }) {
       if (user) {
