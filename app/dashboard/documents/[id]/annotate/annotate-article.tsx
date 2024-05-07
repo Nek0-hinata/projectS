@@ -9,6 +9,7 @@ import { Button, ColorPicker, message } from 'antd';
 import {
   createSentenceTagWithArticleId,
   getSentenceAndTagWithArticleId,
+  getSentenceTag,
 } from '@/app/lib/actions';
 import ColorContent, {
   ColorListType,
@@ -53,13 +54,23 @@ export default function AnnotateArticle(props: IProps) {
   const [textSelection, setTextSelection] =
     useState<ITextSelection>(initTextSelection);
   const ref = useRef<HTMLDivElement>(null);
-  const { top, left, width, height } = useTextSelection(ref.current);
+  const { top, left, height } = useTextSelection(ref.current);
 
   const items: ItemType[] = tagList.map((item) => {
-    const { id, color, name } = item;
+    const { id: tagId, color, name } = item;
 
     async function handleOnTagClick() {
-      const sentence = await createSentenceTagWithArticleId(articleId, id, {
+      const haveSentenceTag = await getSentenceTag(articleId, tagId, {
+        content: range.text,
+        startPosition: range.start,
+        endPosition: range.end,
+      });
+      if (haveSentenceTag) {
+        message.warning('已创建相同被标注的语句');
+        setOpen(false);
+        return;
+      }
+      const sentence = await createSentenceTagWithArticleId(articleId, tagId, {
         content: range.text,
         startPosition: range.start,
         endPosition: range.end,
@@ -73,10 +84,10 @@ export default function AnnotateArticle(props: IProps) {
     }
 
     return {
-      key: id,
+      key: tagId,
       label: (
         <div onClick={handleOnTagClick} className={'text-center'}>
-          <ColorPicker defaultValue={color} key={id} disabled={true} />
+          <ColorPicker defaultValue={color} key={tagId} disabled={true} />
           <div>{name}</div>
         </div>
       ),

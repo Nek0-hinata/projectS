@@ -2,6 +2,7 @@ import { TagStatus } from '@prisma/client';
 import { Popover, Tag } from 'antd';
 
 export type ColorListType = {
+  content: string;
   startPosition: number;
   endPosition: number;
   tags: {
@@ -56,13 +57,14 @@ export default function ColorContent(props: IProps) {
         );
       }
       const Content = () => {
-        return item.tags.map((item) => {
+        return item.tags.map((tag) => {
           return (
-            <div key={item.tag.name + item.tag.color} className={'m-1 flex'}>
-              <div>{item.tag.name}</div>
-              <Tag className={'ml-1'} color={ColorMap[item.status]}>
-                {item.status}
+            <div key={tag.tag.name + tag.tag.color} className={'m-1 flex'}>
+              <div>{tag.tag.name}</div>
+              <Tag className={'ml-1'} color={ColorMap[tag.status]}>
+                {tag.status}
               </Tag>
+              <div style={{ color: tag.tag.color }}>{item.content}</div>
             </div>
           );
         });

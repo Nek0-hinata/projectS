@@ -129,6 +129,30 @@ export async function deleteTag(id: number) {
   return deletedTag;
 }
 
+export async function getSentenceTag(
+  articleId: number,
+  tagId: number,
+  sentence: {
+    content: string;
+    startPosition: number;
+    endPosition: number;
+  },
+) {
+  const { startPosition, endPosition, content } = sentence;
+  return prisma.sentence.findFirst({
+    where: {
+      startPosition,
+      endPosition,
+      articleId,
+      tags: {
+        some: {
+          tagId: tagId,
+        },
+      },
+    },
+  });
+}
+
 export async function createSentenceTagWithArticleId(
   articleId: number,
   tagId: number,
