@@ -72,7 +72,11 @@ export async function deleteArticle(id: number) {
 }
 
 export async function getAllTags() {
-  return prisma.tag.findMany();
+  return prisma.tag.findMany({
+    orderBy: {
+      id: 'asc',
+    },
+  });
 }
 
 export async function getTagWithColor(color: string) {

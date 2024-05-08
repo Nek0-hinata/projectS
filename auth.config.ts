@@ -1,13 +1,13 @@
 import { NextAuthConfig } from 'next-auth';
-import { SideBarEnum } from '@/app/types/types';
+import { SideBarEnum, SideBarUrl } from '@/app/types/types';
 import { Permission } from '@prisma/client';
 
-const PermissionMap = {
-  [SideBarEnum.Documents]: Permission.User,
-  [SideBarEnum.Tags]: Permission.User,
-  [SideBarEnum.Dashboard]: Permission.User,
-  [SideBarEnum.ImportArticle]: Permission.User,
-};
+export const PermissionMap = {
+  [SideBarEnum.Dashboard]: [Permission.User, Permission.Admin],
+  [SideBarEnum.Documents]: [Permission.User, Permission.Admin],
+  [SideBarEnum.Tags]: [Permission.User, Permission.Admin],
+  [SideBarEnum.ImportArticle]: [Permission.User],
+} as Record<SideBarUrl, Permission[]>;
 
 export const authConfig = {
   pages: {
@@ -17,6 +17,7 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const permission = auth?.permission ?? Permission.User;
+      console.log(auth);
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
       if (isOnDashboard) {
         const pathname = nextUrl.pathname;
