@@ -14,10 +14,12 @@ import { Tag } from 'antd';
 
 export default async function Page() {
   const session = await auth();
+  let userPermission: Permission = Permission.User;
   let description = {};
   if (session?.user?.email) {
     const users = await getUserByEmail(session.user.email);
     const { permission } = users;
+    userPermission = permission;
     description = {
       username: users.username,
       email: users.email,
@@ -50,10 +52,12 @@ export default async function Page() {
           title={'已标注的文章进度'}
           percent={articlePercent * 100}
         />
-        <ProgressCard
-          title={'已审核的标注'}
-          percent={sentenceTagPercent * 100}
-        />
+        {userPermission === Permission.Admin && (
+          <ProgressCard
+            title={'已审核的标注'}
+            percent={sentenceTagPercent * 100}
+          />
+        )}
       </div>
     </main>
   );
