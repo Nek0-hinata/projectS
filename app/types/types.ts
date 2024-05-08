@@ -1,10 +1,16 @@
-export type SideBarType = 'Dashboard' | 'Documents' | 'Tags' | 'ImportArticle';
+export type SideBarType =
+  | 'Dashboard'
+  | 'Documents'
+  | 'Tags'
+  | 'ImportArticle'
+  | 'ReviewSentence';
 
 export type SideBarUrl =
   | '/dashboard'
   | '/dashboard/documents'
   | '/dashboard/tags'
-  | '/dashboard/import-article';
+  | '/dashboard/import-article'
+  | '/dashboard/review-sentence';
 
 export type SideBarUrlWithSignOut = SideBarUrl | 'sign_out';
 
@@ -19,4 +25,5 @@ export const SideBarEnum: Record<
   Documents: '/dashboard/documents',
   Tags: '/dashboard/tags',
   ImportArticle: '/dashboard/import-article',
+  ReviewSentence: '/dashboard/review-sentence',
 };

@@ -6,6 +6,14 @@ import { signOut } from 'next-auth/react';
 import { SideBarEnum, SideBarUrlWithSignOut } from '@/app/types/types';
 import { Permission } from '@prisma/client';
 import { PermissionMap } from '@/auth.config';
+import {
+  DatabaseOutlined,
+  FileDoneOutlined,
+  ImportOutlined,
+  LogoutOutlined,
+  PieChartOutlined,
+  TagsOutlined,
+} from '@ant-design/icons';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -46,15 +54,32 @@ export const getItems: (permission: Permission) => MenuItem[] = (
     permission,
   );
   const itemList = [
-    getItemMiddlewareWithPermission('数据统计', SideBarEnum.Dashboard, null),
-    getItemMiddlewareWithPermission('数据集', SideBarEnum.Documents, null),
-    getItemMiddlewareWithPermission('标签', SideBarEnum.Tags, null),
+    getItemMiddlewareWithPermission(
+      '数据统计',
+      SideBarEnum.Dashboard,
+      <PieChartOutlined />,
+    ),
+    getItemMiddlewareWithPermission(
+      '数据集',
+      SideBarEnum.Documents,
+      <DatabaseOutlined />,
+    ),
+    getItemMiddlewareWithPermission('标签', SideBarEnum.Tags, <TagsOutlined />),
     getItemMiddlewareWithPermission(
       '文章导入',
       SideBarEnum.ImportArticle,
-      null,
+      <ImportOutlined />,
     ),
-    getItemMiddlewareWithPermission('登出', SideBarEnum.SignOut, null),
+    getItemMiddlewareWithPermission(
+      '标注审核',
+      SideBarEnum.ReviewSentence,
+      <FileDoneOutlined />,
+    ),
+    getItemMiddlewareWithPermission(
+      '登出',
+      SideBarEnum.SignOut,
+      <LogoutOutlined />,
+    ),
   ];
 
   return itemList.filter(Boolean) as MenuItem[];

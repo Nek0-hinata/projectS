@@ -7,6 +7,7 @@ export const PermissionMap = {
   [SideBarEnum.Documents]: [Permission.User, Permission.Admin],
   [SideBarEnum.Tags]: [Permission.Admin],
   [SideBarEnum.ImportArticle]: [Permission.User, Permission.Admin],
+  [SideBarEnum.ReviewSentence]: [Permission.Admin],
 } as Record<SideBarUrl, Permission[]>;
 
 export const authConfig = {
