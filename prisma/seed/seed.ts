@@ -26,6 +26,7 @@ const main = async () => {
     {
       email: 'user@example.com',
       password: bcrypt.hashSync('123456', 10),
+      permission: Permission.User,
     },
     {
       email: 'admin@example.com',

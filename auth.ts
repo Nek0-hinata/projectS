@@ -4,7 +4,6 @@ import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import prisma from '@/app/lib/prisma';
-import { Permission } from '@prisma/client';
 
 async function getUser(email: string) {
   try {
@@ -55,16 +54,4 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) {
-        token.permission = user.permission;
-      }
-      return token;
-    },
-    session({ session, token }) {
-      session.permission = token.permission as Permission;
-      return session;
-    },
-  },
 });

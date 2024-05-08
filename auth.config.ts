@@ -6,7 +6,7 @@ export const PermissionMap = {
   [SideBarEnum.Dashboard]: [Permission.User, Permission.Admin],
   [SideBarEnum.Documents]: [Permission.User, Permission.Admin],
   [SideBarEnum.Tags]: [Permission.User, Permission.Admin],
-  [SideBarEnum.ImportArticle]: [Permission.User],
+  [SideBarEnum.ImportArticle]: [Permission.User, Permission.Admin],
 } as Record<SideBarUrl, Permission[]>;
 
 export const authConfig = {
@@ -17,7 +17,6 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const permission = auth?.permission ?? Permission.User;
-      console.log(auth);
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
       if (isOnDashboard) {
         const pathname = nextUrl.pathname;
@@ -43,6 +42,16 @@ export const authConfig = {
         return Response.redirect(new URL('/dashboard', nextUrl));
       }
       return true;
+    },
+    jwt({ token, user }) {
+      if (user) {
+        token.permission = user.permission;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      session.permission = token.permission as Permission;
+      return session;
     },
   },
   providers: [], // Add providers with an empty array for now
