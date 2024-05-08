@@ -7,7 +7,8 @@ import prisma from '@/app/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
 import { SideBarEnum } from '@/app/types/types';
-import { sentence as Sentence } from '@prisma/client';
+import { ArticleStatus, sentence as Sentence } from '@prisma/client';
+import { redirect } from 'next/navigation';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -59,6 +60,19 @@ export async function createArticle(title: string, content: string) {
   });
   revalidatePath(SideBarEnum.Documents);
   return createdArticle;
+}
+
+export async function updateArticleStatus(id: number, status: ArticleStatus) {
+  await prisma.article.update({
+    where: {
+      id,
+    },
+    data: {
+      articleStatus: status,
+    },
+  });
+  revalidatePath(SideBarEnum.Documents);
+  redirect(SideBarEnum.Documents);
 }
 
 export async function deleteArticle(id: number) {

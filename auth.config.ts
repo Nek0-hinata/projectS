@@ -5,7 +5,7 @@ import { Permission } from '@prisma/client';
 export const PermissionMap = {
   [SideBarEnum.Dashboard]: [Permission.User, Permission.Admin],
   [SideBarEnum.Documents]: [Permission.User, Permission.Admin],
-  [SideBarEnum.Tags]: [Permission.User, Permission.Admin],
+  [SideBarEnum.Tags]: [Permission.Admin],
   [SideBarEnum.ImportArticle]: [Permission.User, Permission.Admin],
 } as Record<SideBarUrl, Permission[]>;
 

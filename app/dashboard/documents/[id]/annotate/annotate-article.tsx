@@ -4,12 +4,13 @@ import { useTextSelection } from 'ahooks';
 import AnnotationDropdown, {
   ItemType,
 } from '@/app/ui/dashboard/annotation-dropdown';
-import { tag as Tag } from '@prisma/client';
+import { ArticleStatus, tag as Tag } from '@prisma/client';
 import { Button, ColorPicker, message } from 'antd';
 import {
   createSentenceTagWithArticleId,
   getSentenceAndTagWithArticleId,
   getSentenceTag,
+  updateArticleStatus,
 } from '@/app/lib/actions';
 import ColorContent, {
   ColorListType,
@@ -116,6 +117,10 @@ export default function AnnotateArticle(props: IProps) {
     setRange(initRange);
   }
 
+  async function handleOnFinished() {
+    await updateArticleStatus(articleId, ArticleStatus.Finished);
+  }
+
   useEffect(() => {
     getSentenceAndTagWithArticleId(articleId).then((res) => setColorList(res));
   }, [articleId]);
@@ -141,13 +146,19 @@ export default function AnnotateArticle(props: IProps) {
         <ColorContent content={content} colorList={colorList} />
       </div>
       <AnnotationDropdown open={open} span={textSelection} items={items} />
-      <div className={'flex w-full items-center justify-center'}>
+      <div
+        className={'flex w-full flex-col items-center justify-center'}
+        onClick={() => setOpen(false)}
+      >
+        <Button className={'mt-20 w-1/3'} onClick={handleOnClick}>
+          关闭标注窗口
+        </Button>
         <Button
           className={'mt-20 w-1/3'}
           type={'primary'}
-          onClick={handleOnClick}
+          onClick={handleOnFinished}
         >
-          关闭标注窗口
+          标注完成
         </Button>
       </div>
     </div>

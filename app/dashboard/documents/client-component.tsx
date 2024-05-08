@@ -1,5 +1,5 @@
 'use client';
-import { ArticleStatus } from '@prisma/client';
+import { ArticleStatus, Permission } from '@prisma/client';
 import { Button, message, Space, TableProps, Tag } from 'antd';
 import { ITableDataType } from '@/app/ui/s-component/s-table';
 import dayjs from 'dayjs';
@@ -13,11 +13,18 @@ export interface IDataType extends ITableDataType {
   content: string;
   articleStatus: ArticleStatus;
   createdAt: Date;
+  permission: Permission;
 }
 
-function Actions(props: { id: number }) {
+interface IActionsProps {
+  id: number;
+  articleStatus: ArticleStatus;
+  permission: Permission;
+}
+
+function Actions(props: IActionsProps) {
   const router = useRouter();
-  const { id } = props;
+  const { id, articleStatus, permission } = props;
 
   async function handleOnDelete() {
     const deletedArticles = await deleteArticle(id);
@@ -32,10 +39,14 @@ function Actions(props: { id: number }) {
 
   return (
     <Space size={'middle'}>
-      <Button onClick={handleOnAnnotate} type={'primary'}>
-        标注
-      </Button>
-      <Button onClick={handleOnDelete}>删除</Button>
+      {articleStatus === ArticleStatus.UnFinished && (
+        <Button onClick={handleOnAnnotate} type={'primary'}>
+          标注
+        </Button>
+      )}
+      {permission === Permission.Admin && (
+        <Button onClick={handleOnDelete}>删除</Button>
+      )}
     </Space>
   );
 }
@@ -72,8 +83,14 @@ export const columns: TableProps<IDataType>['columns'] = [
   {
     title: 'Action',
     key: 'action',
-    render(_, { id }) {
-      return <Actions id={id} />;
+    render(_, { id, articleStatus, permission }) {
+      return (
+        <Actions
+          id={id}
+          articleStatus={articleStatus}
+          permission={permission}
+        />
+      );
     },
   },
 ];
