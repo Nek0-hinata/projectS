@@ -1,72 +1,60 @@
 import Header from '@/app/ui/dashboard/header';
+import {
+  getAllArticle,
+  getAllSentenceTag,
+  getArticleByStatus,
+  getSentenceTagWithStatus,
+  getUserByEmail,
+} from '@/app/lib/actions';
+import { ArticleStatus, Permission, TagStatus } from '@prisma/client';
+import ProgressCard from '@/app/dashboard/(overview)/progress-card';
+import { auth } from '@/auth';
+import SDescription from '@/app/ui/s-component/s-description';
+import { Tag } from 'antd';
 
 export default async function Page() {
-  // const data = await getUserDashboard();
-  // let percent;
-  // let currentMonthTraffic;
-  // let trafficsList;
-  // const session = await auth();
-  // let internetDetail;
-  // if (session?.internetDetailId) {
-  //   internetDetail = await getInternetDetailById(session.internetDetailId);
-  // }
-  // if (session?.user?.email) {
-  //   const now = new Date();
-  //   trafficsList = await getMonthlyTrafficByUserEmail(
-  //     session.user.email,
-  //     now.getFullYear(),
-  //     now.getMonth(),
-  //   );
-  //   currentMonthTraffic = trafficsList.internetDetails.reduce((acc, cur) => {
-  //     return acc + cur.currentTraffic;
-  //   }, 0);
-  //
-  //   percent = Math.min(
-  //     currentMonthTraffic /
-  //       trafficsList.billingStatements?.[0]?.totalTraffic /
-  //       1000,
-  //     100,
-  //   );
-  // }
-  //
-  // const items = {
-  //   ...data,
-  //   ipAddress: internetDetail?.ipAddress,
-  //   macAddress: internetDetail?.macAddress,
-  //   signOut: (
-  //     <form
-  //       action={async () => {
-  //         'use server';
-  //         await signOut();
-  //       }}
-  //     >
-  //       <Button htmlType={'submit'}>sign out</Button>
-  //     </form>
-  //   ),
-  //   currentTraffic:
-  //     (currentMonthTraffic ?? internetDetail?.currentTraffic ?? 0) / 1000,
-  //   totalTraffic: trafficsList?.billingStatements[0].totalTraffic ?? 1000,
-  // };
+  const session = await auth();
+  let description = {};
+  if (session?.user?.email) {
+    const users = await getUserByEmail(session.user.email);
+    const { permission } = users;
+    description = {
+      username: users.username,
+      email: users.email,
+      permission: (
+        <Tag color={permission === Permission.Admin ? 'geekblue' : 'green'}>
+          {permission}
+        </Tag>
+      ),
+      phoneNumber: users.phoneNumber,
+    };
+  }
+
+  const articleAll = await getAllArticle();
+  const finishedArticle = await getArticleByStatus(ArticleStatus.Finished);
+  const articlePercent = finishedArticle.length / articleAll.length;
+
+  const sentenceTagAll = await getAllSentenceTag();
+  const pendingSentenceTag = await getSentenceTagWithStatus(TagStatus.Pending);
+  const sentenceTagPercent =
+    (sentenceTagAll.length - pendingSentenceTag.length) / sentenceTagAll.length;
 
   return (
     <main className={'h-full'}>
       <Header title={'仪表盘'} />
-      {/*{data && <SDescription items={items} />}*/}
-      {/*<div*/}
-      {/*  className={'flex h-full w-full flex-col items-center justify-center'}*/}
-      {/*>*/}
-      {/*  {percent && (*/}
-      {/*    <>*/}
-      {/*      <div className={'m-20'}>已用流量</div>*/}
-      {/*      <SProgress*/}
-      {/*        className={'mt-50'}*/}
-      {/*        percent={percent}*/}
-      {/*        type={'circle'}*/}
-      {/*        size={300}*/}
-      {/*      />*/}
-      {/*    </>*/}
-      {/*  )}*/}
-      {/*</div>*/}
+      <div className={'m-auto mb-10 mt-10 w-10/12'}>
+        <SDescription items={description} />
+      </div>
+      <div className={'flex items-center justify-around'}>
+        <ProgressCard
+          title={'已标注的文章进度'}
+          percent={articlePercent * 100}
+        />
+        <ProgressCard
+          title={'已审核的标注'}
+          percent={sentenceTagPercent * 100}
+        />
+      </div>
     </main>
   );
 }

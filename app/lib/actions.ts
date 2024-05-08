@@ -39,6 +39,14 @@ export async function authenticate(
   }
 }
 
+export async function getUserByEmail(email: string) {
+  return prisma.users.findUniqueOrThrow({
+    where: {
+      email,
+    },
+  });
+}
+
 export async function getAllArticle() {
   return prisma.article.findMany();
 }
@@ -51,6 +59,14 @@ export async function getArticleById(id: number) {
   });
 }
 
+export async function getArticleByStatus(status: ArticleStatus) {
+  return prisma.article.findMany({
+    where: {
+      articleStatus: status,
+    },
+  });
+}
+
 export async function createArticle(title: string, content: string) {
   const createdArticle = await prisma.article.create({
     data: {
@@ -59,6 +75,7 @@ export async function createArticle(title: string, content: string) {
     },
   });
   revalidatePath(SideBarEnum.Documents);
+  revalidatePath(SideBarEnum.Dashboard);
   return createdArticle;
 }
 
@@ -72,6 +89,7 @@ export async function updateArticleStatus(id: number, status: ArticleStatus) {
     },
   });
   revalidatePath(SideBarEnum.Documents);
+  revalidatePath(SideBarEnum.Dashboard);
   redirect(SideBarEnum.Documents);
 }
 
@@ -82,6 +100,7 @@ export async function deleteArticle(id: number) {
     },
   });
   revalidatePath(SideBarEnum.Documents);
+  revalidatePath(SideBarEnum.Dashboard);
   return deletedArticle;
 }
 
@@ -279,6 +298,14 @@ export async function getAllSentenceTag() {
   });
 }
 
+export async function getSentenceTagWithStatus(status: TagStatus) {
+  return prisma.sentenceTag.findMany({
+    where: {
+      status,
+    },
+  });
+}
+
 export async function updateSentenceTagStatus(
   sentenceId: number,
   tagId: number,
@@ -296,5 +323,6 @@ export async function updateSentenceTagStatus(
     },
   });
   revalidatePath(SideBarEnum.ReviewSentence);
+  revalidatePath(SideBarEnum.Dashboard);
   return updatedSentenceTag;
 }

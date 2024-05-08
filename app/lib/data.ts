@@ -20,9 +20,9 @@ export async function getUserDashboard() {
       },
     });
     if (users) {
-      const { name, email, status } = users;
+      const { username, email, status } = users;
       return {
-        name,
+        username,
         email,
         status,
       };
