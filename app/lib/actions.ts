@@ -7,7 +7,7 @@ import prisma from '@/app/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
 import { SideBarEnum } from '@/app/types/types';
-import { ArticleStatus, sentence as Sentence } from '@prisma/client';
+import { ArticleStatus, sentence as Sentence, TagStatus } from '@prisma/client';
 import { redirect } from 'next/navigation';
 
 const FormSchema = z.object({
@@ -250,4 +250,51 @@ export async function getSentenceAndTagWithArticleId(id: number) {
       },
     },
   });
+}
+
+export async function getAllSentenceTag() {
+  return prisma.sentenceTag.findMany({
+    select: {
+      sentenceId: true,
+      tagId: true,
+      status: true,
+      sentence: {
+        select: {
+          content: true,
+          article: {
+            select: {
+              title: true,
+              id: true,
+            },
+          },
+        },
+      },
+      tag: {
+        select: {
+          name: true,
+          color: true,
+        },
+      },
+    },
+  });
+}
+
+export async function updateSentenceTagStatus(
+  sentenceId: number,
+  tagId: number,
+  status: TagStatus,
+) {
+  const updatedSentenceTag = await prisma.sentenceTag.update({
+    where: {
+      sentenceTagId: {
+        sentenceId,
+        tagId,
+      },
+    },
+    data: {
+      status,
+    },
+  });
+  revalidatePath(SideBarEnum.ReviewSentence);
+  return updatedSentenceTag;
 }

@@ -92,7 +92,7 @@ model sentenceTag {
   status     TagStatus @default(Pending) // 新增字段，表示标签的审核状态
   reviewedBy String? // 新增字段，表示审核该标签的管理员
 
-  @@id([sentenceId, tagId])
+  @@id([sentenceId, tagId], name: "sentenceTagId")
 }
 
 // 新增模型，表示tag与tag的关联

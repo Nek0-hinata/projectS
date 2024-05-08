@@ -1,4 +1,4 @@
-import { lusitana } from '@/app/ui/fonts';
+import Header from '@/app/ui/dashboard/header';
 
 export default async function Page() {
   // const data = await getUserDashboard();
@@ -50,9 +50,7 @@ export default async function Page() {
 
   return (
     <main className={'h-full'}>
-      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-        仪表板
-      </h1>
+      <Header title={'仪表盘'} />
       {/*{data && <SDescription items={items} />}*/}
       {/*<div*/}
       {/*  className={'flex h-full w-full flex-col items-center justify-center'}*/}

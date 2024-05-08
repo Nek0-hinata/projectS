@@ -1,9 +1,9 @@
 import STable from '@/app/ui/s-component/s-table';
 import { columns, IDataType } from '@/app/dashboard/documents/client-component';
 import { getAllArticle } from '@/app/lib/actions';
-import { lusitana } from '@/app/ui/fonts';
 import { auth } from '@/auth';
 import { Permission } from '@prisma/client';
+import Header from '@/app/ui/dashboard/header';
 
 export default async function Page() {
   const article = await getAllArticle();
@@ -23,9 +23,7 @@ export default async function Page() {
   });
   return (
     <main>
-      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-        数据集
-      </h1>
+      <Header title={'数据集'} />
       <STable<IDataType> dataSource={dataSource} columns={columns} />
     </main>
   );
