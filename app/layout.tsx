@@ -4,6 +4,7 @@ import '@/app/ui/global.css';
 import { inter } from '@/app/ui/fonts';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { StyleProvider } from '@ant-design/cssinjs';
+import { SessionProvider } from 'next-auth/react';
 
 export default function RootLayout({
   children,
@@ -12,10 +13,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>
-        <StyleProvider hashPriority={'high'}>
-          <AntdRegistry>{children}</AntdRegistry>
-        </StyleProvider>
+      <body id={'app'} className={`${inter.className} antialiased`}>
+        <SessionProvider>
+          <StyleProvider hashPriority={'high'}>
+            <AntdRegistry>{children}</AntdRegistry>
+          </StyleProvider>
+        </SessionProvider>
       </body>
     </html>
   );

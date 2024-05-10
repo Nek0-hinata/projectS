@@ -1,11 +1,14 @@
 'use server';
 
 import { z } from 'zod';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { AuthError } from 'next-auth';
 import { signIn } from '@/auth';
 import prisma from '@/app/lib/prisma';
+import { revalidatePath } from 'next/cache';
+
+import { SideBarEnum } from '@/app/types/types';
+import { ArticleStatus, sentence as Sentence, TagStatus } from '@prisma/client';
+import { redirect } from 'next/navigation';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -16,83 +19,6 @@ const FormSchema = z.object({
 });
 
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
-
-export async function createInvoice(formData: FormData) {
-  const { customerId, amount, status } = CreateInvoice.parse({
-    customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
-    status: formData.get('status'),
-  });
-  // Test it out:
-  const amountInCents = amount * 100;
-  const date = new Date().toISOString().split('T')[0];
-  try {
-    await prisma.invoices.create({
-      data: {
-        customer_id: customerId,
-        amount: amountInCents,
-        status,
-        date: new Date().toISOString(),
-      },
-    });
-  } catch (error) {
-    return {
-      message: 'Database Error: Failed to Create Invoice.',
-    };
-  }
-
-  revalidatePath('/dashboard/invoices');
-  redirect('/dashboard/invoices');
-}
-
-// Use Zod to update the expected types
-const UpdateInvoice = FormSchema.omit({ id: true, date: true });
-
-// ...
-
-export async function updateInvoice(id: string, formData: FormData) {
-  const { customerId, amount, status } = UpdateInvoice.parse({
-    customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
-    status: formData.get('status'),
-  });
-
-  const amountInCents = amount * 100;
-
-  try {
-    const invoices = await prisma.invoices.update({
-      where: {
-        id,
-      },
-      data: {
-        customer_id: customerId,
-        amount: amountInCents,
-        status,
-      },
-    });
-
-    console.log('update', invoices);
-  } catch (error) {
-    return { message: 'Database Error: Failed to Update Invoice.' };
-  }
-
-  revalidatePath('/dashboard/invoices');
-  redirect('/dashboard/invoices');
-}
-
-export async function deleteInvoice(id: string) {
-  try {
-    await prisma.invoices.delete({
-      where: {
-        id,
-      },
-    });
-    revalidatePath('/dashboard/invoices');
-    return { message: 'Deleted Invoice.' };
-  } catch (error) {
-    return { message: 'Database Error: Failed to Delete Invoice.' };
-  }
-}
 
 export async function authenticate(
   prevState: string | undefined,
@@ -111,4 +37,292 @@ export async function authenticate(
     }
     throw error;
   }
+}
+
+export async function getUserByEmail(email: string) {
+  return prisma.users.findUniqueOrThrow({
+    where: {
+      email,
+    },
+  });
+}
+
+export async function getAllArticle() {
+  return prisma.article.findMany();
+}
+
+export async function getArticleById(id: number) {
+  return prisma.article.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
+export async function getArticleByStatus(status: ArticleStatus) {
+  return prisma.article.findMany({
+    where: {
+      articleStatus: status,
+    },
+  });
+}
+
+export async function createArticle(title: string, content: string) {
+  const createdArticle = await prisma.article.create({
+    data: {
+      title,
+      content,
+    },
+  });
+  revalidatePath(SideBarEnum.Documents);
+  revalidatePath(SideBarEnum.Dashboard);
+  return createdArticle;
+}
+
+export async function updateArticleStatus(id: number, status: ArticleStatus) {
+  await prisma.article.update({
+    where: {
+      id,
+    },
+    data: {
+      articleStatus: status,
+    },
+  });
+  revalidatePath(SideBarEnum.Documents);
+  revalidatePath(SideBarEnum.Dashboard);
+  redirect(SideBarEnum.Documents);
+}
+
+export async function deleteArticle(id: number) {
+  const deletedArticle = await prisma.article.delete({
+    where: {
+      id,
+    },
+  });
+  revalidatePath(SideBarEnum.Documents);
+  revalidatePath(SideBarEnum.Dashboard);
+  return deletedArticle;
+}
+
+export async function getAllTags() {
+  return prisma.tag.findMany({
+    orderBy: {
+      id: 'asc',
+    },
+  });
+}
+
+export async function getTagWithColor(color: string) {
+  return prisma.tag.findMany({
+    where: {
+      color,
+    },
+  });
+}
+
+export async function getTagById(id: number) {
+  return prisma.tag.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
+export async function createTag(name: string, color: string) {
+  const createdTag = await prisma.tag.create({
+    data: {
+      name,
+      color,
+    },
+  });
+  revalidatePath(SideBarEnum.Tags);
+  return createdTag;
+}
+
+export async function editTag(
+  id: number,
+  data: {
+    color: string;
+    name: string;
+  },
+) {
+  const editedTag = await prisma.tag.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  revalidatePath(SideBarEnum.Tags);
+  return editedTag;
+}
+
+export async function deleteTag(id: number) {
+  const deletedTag = await prisma.tag.delete({
+    where: {
+      id,
+    },
+  });
+  revalidatePath(SideBarEnum.Tags);
+  return deletedTag;
+}
+
+export async function getSentenceTag(
+  articleId: number,
+  tagId: number,
+  sentence: {
+    content: string;
+    startPosition: number;
+    endPosition: number;
+  },
+) {
+  const { startPosition, endPosition, content } = sentence;
+  return prisma.sentence.findFirst({
+    where: {
+      startPosition,
+      endPosition,
+      articleId,
+      tags: {
+        some: {
+          tagId: tagId,
+        },
+      },
+    },
+  });
+}
+
+export async function createSentenceTagWithArticleId(
+  articleId: number,
+  tagId: number,
+  sentence: {
+    content: string;
+    startPosition: number;
+    endPosition: number;
+  },
+): Promise<Sentence> {
+  const { content, startPosition, endPosition } = sentence;
+  const findOldList = await prisma.sentence.findFirst({
+    where: {
+      startPosition,
+      endPosition,
+      articleId,
+    },
+  });
+  let resList;
+  if (findOldList) {
+    resList = await prisma.sentence.update({
+      where: {
+        id: findOldList.id,
+      },
+      data: {
+        tags: {
+          create: {
+            tag: {
+              connect: {
+                id: tagId,
+              },
+            },
+          },
+        },
+      },
+    });
+  } else {
+    resList = await prisma.sentence.create({
+      data: {
+        content,
+        startPosition,
+        endPosition,
+        articleId,
+        tags: {
+          create: {
+            tag: {
+              connect: {
+                id: tagId,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+  return resList;
+}
+
+export async function getSentenceAndTagWithArticleId(id: number) {
+  return prisma.sentence.findMany({
+    where: {
+      articleId: id,
+    },
+    select: {
+      content: true,
+      startPosition: true,
+      endPosition: true,
+      tags: {
+        select: {
+          tag: {
+            select: {
+              name: true,
+              color: true,
+            },
+          },
+          status: true,
+        },
+      },
+    },
+  });
+}
+
+export async function getAllSentenceTag() {
+  return prisma.sentenceTag.findMany({
+    select: {
+      sentenceId: true,
+      tagId: true,
+      status: true,
+      sentence: {
+        select: {
+          content: true,
+          article: {
+            select: {
+              title: true,
+              id: true,
+            },
+          },
+        },
+      },
+      tag: {
+        select: {
+          name: true,
+          color: true,
+        },
+      },
+    },
+  });
+}
+
+export async function getSentenceTagWithStatus(status: TagStatus) {
+  return prisma.sentenceTag.findMany({
+    where: {
+      status,
+    },
+  });
+}
+
+export async function updateSentenceTagStatus(
+  sentenceId: number,
+  tagId: number,
+  status: TagStatus,
+) {
+  const updatedSentenceTag = await prisma.sentenceTag.update({
+    where: {
+      sentenceTagId: {
+        sentenceId,
+        tagId,
+      },
+    },
+    data: {
+      status,
+    },
+  });
+  revalidatePath(SideBarEnum.ReviewSentence);
+  revalidatePath(SideBarEnum.Dashboard);
+  return updatedSentenceTag;
 }
