@@ -3,10 +3,9 @@ import { authConfig } from './auth.config';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
-import { User } from '@/app/lib/definitions';
 import prisma from '@/app/lib/prisma';
 
-async function getUser(email: string): Promise<User | null> {
+async function getUser(email: string) {
   try {
     return await prisma.users.findUnique({
       where: {
@@ -19,7 +18,7 @@ async function getUser(email: string): Promise<User | null> {
   }
 }
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { auth, handlers, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
@@ -33,7 +32,21 @@ export const { auth, signIn, signOut } = NextAuth({
           if (!user) return null;
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
-          if (passwordsMatch) return user;
+          if (passwordsMatch) {
+            const id = user.id;
+            await prisma.users.update({
+              where: {
+                id,
+              },
+              data: {
+                lastSignInTime: new Date(),
+              },
+            });
+            return {
+              ...user,
+              permission: user.permission,
+            };
+          }
         }
 
         console.log('Invalid credentials');

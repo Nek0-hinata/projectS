@@ -9,31 +9,40 @@
     "postinstall": "prisma generate",
     "lint": "next lint && npx prettier . --check",
     "lint:fix": "next lint --fix && prettier . --write -l",
+    "migrate": "prisma migrate dev",
+    "postmigrate": "npx @snaplet/seed --config prisma/seed/seed.config.ts sync",
     "prepare": "husky",
-    "seed": "node -r dotenv/config ./scripts/seed.js",
+    "seed": "node -r dotenv/config prisma/seed.js",
     "start": "next start"
   },
   "dependencies": {
-    "@ant-design/nextjs-registry": "^1.0.0",
-    "@heroicons/react": "^2.1.3",
-    "@prisma/client": "^5.13.0",
-    "@vercel/postgres": "^0.8.0",
-    "antd": "^5.16.5",
-    "bcrypt": "^5.1.1",
-    "clsx": "^2.1.0",
-    "lodash": "^4.17.21",
+    "@ant-design/cssinjs": "1.20.0",
+    "@ant-design/icons": "5.3.7",
+    "@ant-design/nextjs-registry": "1.0.0",
+    "@faker-js/faker": "8.4.1",
+    "@heroicons/react": "2.1.3",
+    "@prisma/client": "5.13.0",
+    "@vercel/postgres": "0.8.0",
+    "ahooks": "3.7.11",
+    "antd": "5.17.0",
+    "bcrypt": "5.1.1",
+    "clsx": "2.1.1",
+    "dayjs": "1.11.11",
+    "lodash": "4.17.21",
     "next": "14.2.3",
     "next-auth": "5.0.0-beta.17",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "zod": "^3.23.4"
+    "zod": "3.23.4"
   },
   "devDependencies": {
     "@commitlint/cli": "19.3.0",
     "@commitlint/config-conventional": "19.2.2",
+    "@snaplet/copycat": "^5.0.0",
+    "@snaplet/seed": "0.97.2",
     "@types/bcrypt": "5.0.2",
-    "@types/lodash": "4.17.0",
-    "@types/node": "20.12.7",
+    "@types/lodash": "4.17.1",
+    "@types/node": "20.12.9",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",
     "@vercel/style-guide": "6.0.0",
@@ -54,5 +63,8 @@
     "tailwindcss": "3.4.3",
     "typescript": "5.4.5"
   },
-  "packageManager": "pnpm@8.15.7"
+  "packageManager": "pnpm@9.1.0",
+  "prisma": {
+    "seed": "npx tsx prisma/seed/seed.ts"
+  }
 }

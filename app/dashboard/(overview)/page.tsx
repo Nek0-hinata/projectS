@@ -1,31 +1,63 @@
-import { lusitana } from '@/app/ui/fonts';
-import RevenueChart from '@/app/ui/dashboard/revenue-chart';
-import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
-import CardWrapper from '@/app/ui/dashboard/cards';
-import { Suspense } from 'react';
+import Header from '@/app/ui/dashboard/header';
 import {
-  LatestInvoicesSkeleton,
-  RevenueChartSkeleton,
-} from '@/app/ui/skeletons';
+  getAllArticle,
+  getAllSentenceTag,
+  getArticleByStatus,
+  getSentenceTagWithStatus,
+  getUserByEmail,
+} from '@/app/lib/actions';
+import { ArticleStatus, Permission, TagStatus } from '@prisma/client';
+import ProgressCard from '@/app/dashboard/(overview)/progress-card';
+import { auth } from '@/auth';
+import SDescription from '@/app/ui/s-component/s-description';
+import { Tag } from 'antd';
 
 export default async function Page() {
+  const session = await auth();
+  let userPermission: Permission = Permission.User;
+  let description = {};
+  if (session?.user?.email) {
+    const users = await getUserByEmail(session.user.email);
+    const { permission } = users;
+    userPermission = permission;
+    description = {
+      username: users.username,
+      email: users.email,
+      permission: (
+        <Tag color={permission === Permission.Admin ? 'geekblue' : 'green'}>
+          {permission}
+        </Tag>
+      ),
+      phoneNumber: users.phoneNumber,
+    };
+  }
+
+  const articleAll = await getAllArticle();
+  const finishedArticle = await getArticleByStatus(ArticleStatus.Finished);
+  const articlePercent = finishedArticle.length / articleAll.length;
+
+  const sentenceTagAll = await getAllSentenceTag();
+  const pendingSentenceTag = await getSentenceTagWithStatus(TagStatus.Pending);
+  const sentenceTagPercent =
+    (sentenceTagAll.length - pendingSentenceTag.length) / sentenceTagAll.length;
+
   return (
-    <main>
-      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-        仪表板
-      </h1>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <Suspense>
-          <CardWrapper />
-        </Suspense>
+    <main className={'h-full'}>
+      <Header title={'仪表盘'} />
+      <div className={'m-auto mb-10 mt-10 w-10/12'}>
+        <SDescription items={description} />
       </div>
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
-        <Suspense fallback={<RevenueChartSkeleton />}>
-          <RevenueChart />
-        </Suspense>
-        <Suspense fallback={<LatestInvoicesSkeleton />}>
-          <LatestInvoices />
-        </Suspense>
+      <div className={'flex items-center justify-around'}>
+        <ProgressCard
+          title={'已标注的文章进度'}
+          percent={articlePercent * 100}
+        />
+        {userPermission === Permission.Admin && (
+          <ProgressCard
+            title={'已审核的标注'}
+            percent={sentenceTagPercent * 100}
+          />
+        )}
       </div>
     </main>
   );
