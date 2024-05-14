@@ -46,9 +46,7 @@ function getItemMiddleware(
   return undefined;
 }
 
-export const getItems: (permission: Permission) => MenuItem[] = (
-  permission,
-) => {
+export const getItems = (permission: Permission): MenuItem[] => {
   const getItemMiddlewareWithPermission = getItemMiddleware.bind(
     null,
     permission,

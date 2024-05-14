@@ -17,8 +17,7 @@ const FormSchema = z.object({
   status: z.enum(['pending', 'paid']),
   date: z.string(),
 });
-
-const CreateInvoice = FormSchema.omit({ id: true, date: true });
+FormSchema.omit({ id: true, date: true });
 
 export async function authenticate(
   prevState: string | undefined,
@@ -175,7 +174,7 @@ export async function getSentenceTag(
     endPosition: number;
   },
 ) {
-  const { startPosition, endPosition, content } = sentence;
+  const { startPosition, endPosition } = sentence;
   return prisma.sentence.findFirst({
     where: {
       startPosition,

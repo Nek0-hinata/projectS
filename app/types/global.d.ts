@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Permission, PrismaClient } from '@prisma/client';
 
 declare module 'next-auth' {
