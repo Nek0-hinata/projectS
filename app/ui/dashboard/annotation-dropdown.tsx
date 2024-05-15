@@ -24,7 +24,7 @@ type ValidatedSpan = {
 };
 
 export default function AnnotationDropdown(props: IAnnotationDropdownProps) {
-  const { span, open, menu, items } = props;
+  const { span, open, items } = props;
 
   function isShow(
     span: IAnnotationDropdownProps['span'],
