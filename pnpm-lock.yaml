@@ -79,8 +79,8 @@ importers:
         specifier: 5.0.0
         version: 5.0.0
       '@snaplet/seed':
-        specifier: 0.97.19
-        version: 0.97.19(@prisma/client@5.14.0(prisma@5.14.0))(@snaplet/copycat@5.0.0)(@types/pg@8.6.6)
+        specifier: 0.97.20
+        version: 0.97.20(@prisma/client@5.14.0(prisma@5.14.0))(@snaplet/copycat@5.0.0)(@types/pg@8.6.6)
       '@types/bcrypt':
         specifier: 5.0.2
         version: 5.0.2
@@ -726,8 +726,8 @@ packages:
   '@snaplet/copycat@5.0.0':
     resolution: {integrity: sha512-qapZN1mwVO5v1GmUW66gXoZ8qtpsqJk+tPUb3lGtyzwYtAPifHA0uymsi/Pjv6SVvl9SQhD2Af6Bb8Eime856g==}
 
-  '@snaplet/seed@0.97.19':
-    resolution: {integrity: sha512-6QRvcSelI4gtvg9pF0DJYCpQHe/fyVrhCYdaXQeJZrAjEQirwG3g4AeaP1N37uYbT0jsPbjBzPgzPAAT+6BulA==}
+  '@snaplet/seed@0.97.20':
+    resolution: {integrity: sha512-+lnqESgwP92O1266vsTyoRgrg4hMCUTybBUxDT1ICMBFcvdjgwcOaUt8Xjj81YvxYkZlu5+TTBIjyNQT4nP4jQ==}
     engines: {node: '>=18.5.0'}
     hasBin: true
     peerDependencies:
@@ -4930,7 +4930,7 @@ snapshots:
       string-argv: 0.3.2
       uuid: 8.3.2
 
-  '@snaplet/seed@0.97.19(@prisma/client@5.14.0(prisma@5.14.0))(@snaplet/copycat@5.0.0)(@types/pg@8.6.6)':
+  '@snaplet/seed@0.97.20(@prisma/client@5.14.0(prisma@5.14.0))(@snaplet/copycat@5.0.0)(@types/pg@8.6.6)':
     dependencies:
       '@inquirer/prompts': 5.0.2
       '@prisma/generator-helper': 5.14.0-dev.34
