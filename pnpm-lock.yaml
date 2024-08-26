@@ -16,7 +16,7 @@ importers:
         version: 5.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ant-design/nextjs-registry':
         specifier: 1.0.1
-        version: 1.0.1(@ant-design/cssinjs@1.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(antd@5.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.6(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 1.0.1(@ant-design/cssinjs@1.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(antd@5.20.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.6(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@faker-js/faker':
         specifier: 8.4.1
         version: 8.4.1
@@ -39,8 +39,8 @@ importers:
         specifier: 3.8.1
         version: 3.8.1(react@18.3.1)
       antd:
-        specifier: 5.20.2
-        version: 5.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 5.20.3
+        version: 5.20.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       bcrypt:
         specifier: 5.1.1
         version: 5.1.1
@@ -1114,8 +1114,8 @@ packages:
     resolution: {integrity: sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==}
     engines: {node: '>=12'}
 
-  antd@5.20.2:
-    resolution: {integrity: sha512-9d6Bs5ZKIV+JhB0eD7KxYnIfnhUh86kNtTGIuNiIxHFUhbuyT1DXN2SuMksDmtSfuRYZ82/C4hq+OJjWNNbmHg==}
+  antd@5.20.3:
+    resolution: {integrity: sha512-v2s5LJlhuccIKLT17ESXQDkiQJdPK4jXg4x2pmSSRlrKXAxfftn8Zhd/7pdF3qR3OkwheQpSRjynrNZKp9Tgkg==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
@@ -4396,10 +4396,10 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@ant-design/nextjs-registry@1.0.1(@ant-design/cssinjs@1.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(antd@5.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.6(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@ant-design/nextjs-registry@1.0.1(@ant-design/cssinjs@1.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(antd@5.20.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.6(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@ant-design/cssinjs': 1.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      antd: 5.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      antd: 5.20.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next: 14.2.6(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -5552,7 +5552,7 @@ snapshots:
 
   ansi-styles@6.2.1: {}
 
-  antd@5.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  antd@5.20.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@ant-design/colors': 7.1.0
       '@ant-design/cssinjs': 1.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
