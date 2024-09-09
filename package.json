@@ -26,7 +26,7 @@
     "@vercel/postgres": "0.10.0",
     "@vercel/speed-insights": "1.0.12",
     "ahooks": "3.8.1",
-    "antd": "5.20.5",
+    "antd": "5.20.6",
     "bcrypt": "5.1.1",
     "clsx": "2.1.1",
     "dayjs": "1.11.13",
