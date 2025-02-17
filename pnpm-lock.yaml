@@ -16,7 +16,7 @@ importers:
         version: 5.6.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ant-design/nextjs-registry':
         specifier: 1.0.2
-        version: 1.0.2(@ant-design/cssinjs@1.23.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(antd@5.24.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.24(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 1.0.2(@ant-design/cssinjs@1.23.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(antd@5.24.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.24(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@faker-js/faker':
         specifier: 8.4.1
         version: 8.4.1
@@ -39,8 +39,8 @@ importers:
         specifier: 3.8.4
         version: 3.8.4(react@18.3.1)
       antd:
-        specifier: 5.24.0
-        version: 5.24.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 5.24.1
+        version: 5.24.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       bcrypt:
         specifier: 5.1.1
         version: 5.1.1
@@ -1108,8 +1108,8 @@ packages:
     resolution: {integrity: sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==}
     engines: {node: '>=12'}
 
-  antd@5.24.0:
-    resolution: {integrity: sha512-05PZBIf6ijLHAQskBTW3nwS2t7tQmyLA6Xq8vK2Sk5tsgCsH/UE1cNCDYnKFGRJ7cKYuWJ565JDo9LejbiO42A==}
+  antd@5.24.1:
+    resolution: {integrity: sha512-RGwpXpSr2RtoUnrpJl3V6ZaTExwSXkFVxV24VUowwC04n6oA1sGyJrofQOKNqD623sVxL5UJBmf0a+BFBImP3Q==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
@@ -3572,8 +3572,8 @@ packages:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
 
-  rc-table@7.50.2:
-    resolution: {integrity: sha512-+nJbzxzstBriLb5sr9U7Vjs7+4dO8cWlouQbMwBVYghk2vr508bBdkHJeP/z9HVjAIKmAgMQKxmtbgDd3gc5wA==}
+  rc-table@7.50.3:
+    resolution: {integrity: sha512-Z4/zNCzjv7f/XzPRecb+vJU0DJKdsYt4YRkDzNl4G05m7JmxrKGYC2KqN1Ew6jw2zJq7cxVv3z39qyZOHMuf7A==}
     engines: {node: '>=8.x'}
     peerDependencies:
       react: '>=16.9.0'
@@ -4401,10 +4401,10 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@ant-design/nextjs-registry@1.0.2(@ant-design/cssinjs@1.23.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(antd@5.24.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.24(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@ant-design/nextjs-registry@1.0.2(@ant-design/cssinjs@1.23.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(antd@5.24.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.24(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@ant-design/cssinjs': 1.23.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      antd: 5.24.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      antd: 5.24.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next: 14.2.24(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -5532,7 +5532,7 @@ snapshots:
 
   ansi-styles@6.2.1: {}
 
-  antd@5.24.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  antd@5.24.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@ant-design/colors': 7.2.0
       '@ant-design/cssinjs': 1.23.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -5573,7 +5573,7 @@ snapshots:
       rc-slider: 11.1.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-steps: 6.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-switch: 4.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      rc-table: 7.50.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      rc-table: 7.50.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-tabs: 15.5.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-textarea: 1.9.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-tooltip: 6.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -8217,7 +8217,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  rc-table@7.50.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  rc-table@7.50.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.26.0
       '@rc-component/context': 1.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
