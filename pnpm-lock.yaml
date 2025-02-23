@@ -98,7 +98,7 @@ importers:
         version: 18.3.5(@types/react@18.3.18)
       '@vercel/style-guide':
         specifier: 6.0.0
-        version: 6.0.0(@next/eslint-plugin-next@14.2.24)(eslint@8.57.1)(prettier@3.5.1)(typescript@5.7.3)
+        version: 6.0.0(@next/eslint-plugin-next@14.2.24)(eslint@8.57.1)(prettier@3.5.2)(typescript@5.7.3)
       autoprefixer:
         specifier: 10.4.20
         version: 10.4.20(postcss@8.5.3)
@@ -133,11 +133,11 @@ importers:
         specifier: 8.5.3
         version: 8.5.3
       prettier:
-        specifier: 3.5.1
-        version: 3.5.1
+        specifier: 3.5.2
+        version: 3.5.2
       prettier-plugin-tailwindcss:
         specifier: 0.6.11
-        version: 0.6.11(prettier@3.5.1)
+        version: 0.6.11(prettier@3.5.2)
       prisma:
         specifier: 5.22.0
         version: 5.22.0
@@ -3361,8 +3361,8 @@ packages:
       prettier-plugin-svelte:
         optional: true
 
-  prettier@3.5.1:
-    resolution: {integrity: sha512-hPpFQvHwL3Qv5AdRvBFMhnKo4tYxp0ReXiPn2bxkiohEX6mBeBwEpBSQTkD458RaaDKQMYSp4hX4UtfUTA5wDw==}
+  prettier@3.5.2:
+    resolution: {integrity: sha512-lc6npv5PH7hVqozBR7lkBNOGXV9vMwROAPlumdBkX0wTbbzPu/U1hk5yL8p2pt4Xoc+2mkT8t/sow2YrV/M5qg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5416,7 +5416,7 @@ snapshots:
       next: 14.2.24(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
 
-  '@vercel/style-guide@6.0.0(@next/eslint-plugin-next@14.2.24)(eslint@8.57.1)(prettier@3.5.1)(typescript@5.7.3)':
+  '@vercel/style-guide@6.0.0(@next/eslint-plugin-next@14.2.24)(eslint@8.57.1)(prettier@3.5.2)(typescript@5.7.3)':
     dependencies:
       '@babel/core': 7.24.4
       '@babel/eslint-parser': 7.24.1(@babel/core@7.24.4)(eslint@8.57.1)
@@ -5437,11 +5437,11 @@ snapshots:
       eslint-plugin-tsdoc: 0.2.17
       eslint-plugin-unicorn: 51.0.1(eslint@8.57.1)
       eslint-plugin-vitest: 0.3.26(@typescript-eslint/eslint-plugin@7.7.1(@typescript-eslint/parser@7.7.1(eslint@8.57.1)(typescript@5.7.3))(eslint@8.57.1)(typescript@5.7.3))(eslint@8.57.1)(typescript@5.7.3)
-      prettier-plugin-packagejson: 2.5.0(prettier@3.5.1)
+      prettier-plugin-packagejson: 2.5.0(prettier@3.5.2)
     optionalDependencies:
       '@next/eslint-plugin-next': 14.2.24
       eslint: 8.57.1
-      prettier: 3.5.1
+      prettier: 3.5.2
       typescript: 5.7.3
     transitivePeerDependencies:
       - eslint-import-resolver-node
@@ -7919,18 +7919,18 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-packagejson@2.5.0(prettier@3.5.1):
+  prettier-plugin-packagejson@2.5.0(prettier@3.5.2):
     dependencies:
       sort-package-json: 2.10.0
       synckit: 0.9.0
     optionalDependencies:
-      prettier: 3.5.1
+      prettier: 3.5.2
 
-  prettier-plugin-tailwindcss@0.6.11(prettier@3.5.1):
+  prettier-plugin-tailwindcss@0.6.11(prettier@3.5.2):
     dependencies:
-      prettier: 3.5.1
+      prettier: 3.5.2
 
-  prettier@3.5.1: {}
+  prettier@3.5.2: {}
 
   pretty-format@3.8.0: {}
 
