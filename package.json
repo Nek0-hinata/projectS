@@ -58,7 +58,7 @@
     "eslint-config-next": "14.2.24",
     "eslint-config-prettier": "9.1.0",
     "husky": "9.1.7",
-    "postcss": "8.5.2",
+    "postcss": "8.5.3",
     "prettier": "3.5.1",
     "prettier-plugin-tailwindcss": "0.6.11",
     "prisma": "5.22.0",
